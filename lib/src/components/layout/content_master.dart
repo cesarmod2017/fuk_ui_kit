@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 
@@ -124,7 +122,6 @@ class FukContentMasterState extends State<FukContentMaster> {
   }
 
   Widget _buildPageContent() {
-    log('Selected page: $_selectedPage');
     final pageContent = widget.routes[_selectedPage];
     return pageContent ?? const Center(child: Text('Page not found'));
   }
