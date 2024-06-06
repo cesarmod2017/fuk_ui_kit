@@ -1,0 +1,14 @@
+# Exclude generic files and directories
+
+build/
+.idea/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+.melos
+.dart_tool/
+packages/
+.pinned/
+_.log
+_.tmp
+\*.swp

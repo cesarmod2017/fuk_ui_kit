@@ -20,10 +20,10 @@ class FukContentMaster extends StatefulWidget {
   });
 
   @override
-  _FukContentMasterState createState() => _FukContentMasterState();
+  FukContentMasterState createState() => FukContentMasterState();
 }
 
-class _FukContentMasterState extends State<FukContentMaster> {
+class FukContentMasterState extends State<FukContentMaster> {
   String _selectedPage = '';
 
   @override

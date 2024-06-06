@@ -18,17 +18,11 @@ class FukSidebar extends StatefulWidget {
   });
 
   @override
-  _FukSidebarState createState() => _FukSidebarState();
+  FukSidebarState createState() => FukSidebarState();
 }
 
-class _FukSidebarState extends State<FukSidebar> {
-  bool _isExpanded = false;
-
-  void _toggleSidebar() {
-    setState(() {
-      _isExpanded = !_isExpanded;
-    });
-  }
+class FukSidebarState extends State<FukSidebar> {
+  final bool _isExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +61,7 @@ class _FukSidebarState extends State<FukSidebar> {
     );
   }
 
-  Widget _buildItem(SideBarItems item, {int level = 0}) {
+  Widget _buildItem(SideBarItems item) {
     bool hasChildren = item.children != null && item.children!.isNotEmpty;
 
     return PopupMenuButton<SideBarItems>(
