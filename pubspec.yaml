@@ -3,6 +3,8 @@ description: A Flutter UI Kit for desktop and web applications.
 version: 0.0.2
 homepage: https://github.com/cesarmod2017/fuk_ui_kit
 repository: https://github.com/cesarmod2017/fuk_ui_kit
+author: Cesar Mesquita Caron <cesarmod@modspace.com.br>
+
 environment:
   sdk: ">=3.3.4 <4.0.0"
   flutter: ">=1.17.0"
