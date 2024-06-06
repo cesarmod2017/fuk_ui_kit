@@ -1,4 +1,4 @@
-library flutter_ui_kit;
+library fuk_ui_kit;
 
 export 'src/components/layout/aside.dart';
 export 'src/components/layout/content.dart';

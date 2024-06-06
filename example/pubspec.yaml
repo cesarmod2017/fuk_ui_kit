@@ -1,4 +1,4 @@
-name: flutter_ui_kit_sample
+name: fuk_ui_kit_sample
 description: "A new Flutter project."
 publish_to: "none"
 version: 0.1.0
@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_ui_kit:
+  fuk_ui_kit:
     path: ../
 
 dev_dependencies:

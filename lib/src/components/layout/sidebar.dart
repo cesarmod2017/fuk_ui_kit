@@ -1,7 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_kit/flutter_ui_kit.dart';
+import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 
 class FukSidebar extends StatefulWidget {
   final List<SideBarItems> items;
@@ -67,11 +65,8 @@ class FukSidebarState extends State<FukSidebar> {
     return PopupMenuButton<SideBarItems>(
       tooltip: item.title,
       onSelected: (selectedItem) {
-        log(selectedItem.routeName);
         if (selectedItem.changePage != null) {
           selectedItem.changePage!();
-        } else {
-          log('No changePage function found for ${selectedItem.routeName}');
         }
       },
       itemBuilder: (context) => hasChildren

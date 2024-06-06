@@ -8,7 +8,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  flutter_ui_kit: ^0.0.1
+  fuk_ui_kit: ^0.0.1
 ```
 
 ### Usage
@@ -16,7 +16,7 @@ dependencies:
 Import the Package
 
 ```Dart
-import 'package:flutter_ui_kit/flutter_ui_kit.dart';
+import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 ```
 
 ### FukSidebar
@@ -27,7 +27,7 @@ The FukSidebar widget allows you to create a sidebar with hierarchical menu item
 
 ```Dart
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_kit/flutter_ui_kit.dart';
+import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 
 void main() {
   runApp(const MainApp());
@@ -141,7 +141,7 @@ The FukPage widget allows you to create a structured page layout with a header, 
 
 ```Dart
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_kit/flutter_ui_kit.dart';
+import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

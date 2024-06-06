@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ui_kit/flutter_ui_kit.dart';
+import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 
 void main() {
   runApp(const MainApp());
