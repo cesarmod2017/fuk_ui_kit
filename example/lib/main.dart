@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 
@@ -33,8 +35,9 @@ class _HomePageState extends State<HomePage> {
 
   final List<DataGridColumn> _columns = [
     DataGridColumn(title: 'ID', width: 80, sortable: false, field: 'id'),
-    DataGridColumn(title: 'Name', width: 150, sortable: true, field: 'name'),
-    DataGridColumn(title: 'Age', width: 200, sortable: true, field: 'age'),
+    DataGridColumn(title: 'Name', width: 350, sortable: true, field: 'name'),
+    DataGridColumn(title: 'Age', width: 100, sortable: true, field: 'age'),
+    DataGridColumn(title: '#', width: 100, sortable: false, field: 'action'),
   ];
 
   List<Map<String, dynamic>> _data = List.generate(
@@ -43,6 +46,12 @@ class _HomePageState extends State<HomePage> {
       'id': index + 1,
       'name': 'Name ${index + 1}',
       'age': 20 + (index % 10),
+      'action': FukButton(
+        text: 'Edit',
+        onPressed: () {
+          log('Edit button pressed for item $index');
+        },
+      ),
     },
   );
 
@@ -465,6 +474,11 @@ class _HomePageState extends State<HomePage> {
               onSearch: _onSearch,
               onAdvancedSearch: _onAdvancedSearch,
               showAdvancedSearch: true,
+              hoverHighlight: true,
+              hintText: 'Pesquisar ....',
+              searchWhenTyping: true,
+              stripedRows: false,
+              showColumnBorders: true,
             ),
           ),
           footer: const FukFooter(text: 'Footer Content'),

@@ -27,7 +27,10 @@ class FukDataGrid extends StatefulWidget {
   final Function(String)? onSearch;
   final VoidCallback? onAdvancedSearch;
   final String? hintText;
-  final bool? searcWhenTyping;
+  final bool? searchWhenTyping;
+  final bool? hoverHighlight;
+  final bool? stripedRows;
+  final bool? showColumnBorders;
 
   const FukDataGrid({
     super.key,
@@ -41,7 +44,10 @@ class FukDataGrid extends StatefulWidget {
     this.onSearch,
     this.onAdvancedSearch,
     this.hintText,
-    this.searcWhenTyping,
+    this.searchWhenTyping,
+    this.hoverHighlight = true,
+    this.stripedRows = false,
+    this.showColumnBorders = false,
   });
 
   @override
@@ -52,6 +58,7 @@ class FukDataGridState extends State<FukDataGrid> {
   String _searchQuery = '';
   String? _sortedColumn;
   bool _isAscending = true;
+  int _hoveredIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +90,7 @@ class FukDataGridState extends State<FukDataGrid> {
                 setState(() {
                   _searchQuery = value;
                 });
-                if (widget.searcWhenTyping == true) {
+                if (widget.searchWhenTyping == true) {
                   widget.onSearch?.call(_searchQuery);
                 }
               },
@@ -117,6 +124,15 @@ class FukDataGridState extends State<FukDataGrid> {
             child: Container(
               width: column.width,
               padding: const EdgeInsets.all(8.0),
+              decoration: widget.showColumnBorders == true
+                  ? BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                        ),
+                      ),
+                    )
+                  : null,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -150,17 +166,52 @@ class FukDataGridState extends State<FukDataGrid> {
       itemCount: widget.data.length,
       itemBuilder: (context, index) {
         final row = widget.data[index];
-        return Row(
-          children: widget.columns.map((column) {
-            return Container(
-              width: column.width,
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                row[column.field]?.toString() ?? '',
-                style: column.textStyle,
-              ),
-            );
-          }).toList(),
+        final isHovered =
+            widget.hoverHighlight == true && _hoveredIndex == index;
+        final isStriped = widget.stripedRows == true && index % 2 == 0;
+        return MouseRegion(
+          onEnter: (_) {
+            setState(() {
+              _hoveredIndex = index;
+            });
+          },
+          onExit: (_) {
+            setState(() {
+              _hoveredIndex = -1;
+            });
+          },
+          child: Container(
+            color: isHovered
+                ? Theme.of(context).hoverColor
+                : isStriped
+                    ? Theme.of(context).colorScheme.surfaceVariant
+                    : Theme.of(context).colorScheme.background,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: widget.columns.map((column) {
+                    return Container(
+                      width: column.width,
+                      padding: const EdgeInsets.all(8.0),
+                      child: row[column.field] is Widget
+                          ? row[column.field]
+                          : Text(
+                              row[column.field]?.toString() ?? '',
+                              style: column.textStyle,
+                            ),
+                    );
+                  }).toList(),
+                ),
+                if (widget.showColumnBorders == true)
+                  Container(
+                      height: 1,
+                      width: double.infinity,
+                      color: Theme.of(context).colorScheme.onSurface),
+              ],
+            ),
+          ),
         );
       },
     );
