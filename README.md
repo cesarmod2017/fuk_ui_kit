@@ -15,7 +15,7 @@ dependencies:
 
 Import the Package
 
-```Dart
+```dart
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 ```
 
@@ -25,7 +25,7 @@ The FukSidebar widget allows you to create a sidebar with hierarchical menu item
 
 ## Example
 
-```Dart
+```dart
 import 'package:flutter/material.dart';
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 
@@ -139,7 +139,7 @@ The FukPage widget allows you to create a structured page layout with a header, 
 
 ## Example
 
-```Dart
+```dart
 import 'package:flutter/material.dart';
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 
@@ -185,7 +185,7 @@ class HomePage extends StatelessWidget {
 
 A header component for your pages.
 
-```Dart
+```dart
 FukHeader(
   title: 'Dashboard',
   leading: const Icon(Icons.menu),
@@ -204,7 +204,7 @@ FukHeader(
 
 A content component for your pages.
 
-```Dart
+```dart
 FukContent(
     child: Center(
         child: Text('This is the content area.'),
@@ -216,8 +216,307 @@ FukContent(
 
 A footer component for your pages.
 
-```Dart
+```dart
     FukFooter(text: 'Footer Content')
+```
+
+### FukButton
+
+The FukButton widget provides several configurations, including different layouts for text and icon, loading state, custom colors, rounded borders, and full-width option.
+
+#### Example
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_ui_kit/flutter_ui_kit.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: const HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool _isLoading = false;
+
+  void _simulateLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Flutter UI Kit Example')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const FukLabel(text: 'Basic Button:'),
+            const SizedBox(height: 8),
+            FukButton(
+              text: 'Submit',
+              onPressed: _simulateLoading,
+              isLoading: _isLoading,
+            ),
+            const SizedBox(height: 16),
+            const FukLabel(text: 'Button with Icon (Left):'),
+            const SizedBox(height: 8),
+            FukButton(
+              text: 'Submit',
+              icon: Icons.send,
+              onPressed: _simulateLoading,
+              isLoading: _isLoading,
+            ),
+            const SizedBox(height: 16),
+            const FukLabel(text: 'Button with Icon (Right):'),
+            const SizedBox(height: 8),
+            FukButton(
+              text: 'Submit',
+              icon: Icons.send,
+              iconOnRight: true,
+              onPressed: _simulateLoading,
+              isLoading: _isLoading,
+            ),
+            const SizedBox(height: 16),
+            const FukLabel(text: 'Button with Icon (Below Text):'),
+            const SizedBox(height: 8),
+            FukButton(
+              text: 'Submit',
+              icon: Icons.send,
+              iconBelowText: true,
+              onPressed: _simulateLoading,
+              isLoading: _isLoading,
+            ),
+            const SizedBox(height: 16),
+            const FukLabel(text: 'Icon Only Button:'),
+            const SizedBox(height: 8),
+            FukButton(
+              icon: Icons.send,
+              onPressed: _simulateLoading,
+              isLoading: _isLoading,
+            ),
+            const SizedBox(height: 16),
+            const FukLabel(text: 'Button with Custom Colors and Rounded Border:'),
+            const SizedBox(height: 8),
+            FukButton(
+              text: 'Submit',
+              icon: Icons.send,
+              onPressed: _simulateLoading,
+              isLoading: _isLoading,
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
+              borderRadius: 16.0,
+            ),
+            const SizedBox(height: 16),
+            const FukLabel(text: 'Full Width Button:'),
+            const SizedBox(height: 8),
+            FukButton(
+              text: 'Submit',
+              onPressed: _simulateLoading,
+              isLoading: _isLoading,
+              fullWidth: true,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+```
+
+### FukLabel
+
+The FukLabel widget allows you to display text with configurable sizes (small, medium, large).
+
+#### Example
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_ui_kit/flutter_ui_kit.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: const HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Flutter UI Kit Example')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const FukLabel(
+              text: 'Small Label',
+              size: FukLabelSize.small,
+            ),
+            const SizedBox(height: 8),
+            const FukLabel(
+              text: 'Medium Label (Default)',
+            ),
+            const SizedBox(height: 8),
+            const FukLabel(
+              text: 'Large Label',
+              size: FukLabelSize.large,
+            ),
+            const SizedBox(height: 16),
+            const FukLabel(
+              text: 'Custom Styled Label',
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+```
+
+### FukModal
+
+The FukModal widget provides a customizable modal dialog with header, content, and footer sections.
+
+#### Example
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_ui_kit/flutter_ui_kit.dart';
+
+void main() {
+  runApp(const MainApp());
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      home: const HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  void _showModal(BuildContext context, FukModalSize size) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FukModal(
+          title: 'Modal Title',
+          content: const Text('This is the content of the modal. ' * 20),
+          leftActions: [
+            FukButton(
+              text: 'Custom Action',
+              onPressed: () {
+                // Handle custom action
+              },
+            ),
+          ],
+          rightActions: [
+            FukButton(
+              text: 'Cancel',
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FukButton(
+              text: 'Submit',
+              onPressed: () {
+                // Handle submit action
+              },
+            ),
+          ],
+          size: size,
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Flutter UI Kit Example')),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FukButton(
+              text: 'Show Small Modal',
+              onPressed: () => _showModal(context, FukModalSize.small),
+            ),
+            const SizedBox(height: 16),
+            FukButton(
+              text: 'Show Medium Modal',
+              onPressed: () => _showModal(context, FukModalSize.medium),
+            ),
+            const SizedBox(height: 16),
+            FukButton(
+              text: 'Show Large Modal',
+              onPressed: () => _showModal(context, FukModalSize.large),
+            ),
+            const SizedBox(height: 16),
+            FukButton(
+              text: 'Show Fullscreen Modal',
+              onPressed: () => _showModal(context, FukModalSize.fullscreen),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 ```
 
 ### Features

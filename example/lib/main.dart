@@ -18,8 +18,102 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool _isLoading = false;
+
+  void _simulateLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
+
+  void _showNotification(
+      BuildContext context, FukNotifyType type, FukNotifyDirection direction) {
+    FukNotify.show(
+      context: context,
+      title: 'Notification Title',
+      message: 'This is the detail message for the notification.',
+      type: type,
+      direction: direction,
+    );
+  }
+
+  void _showModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return FukModal(
+          title: 'Modal Title',
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(
+              100,
+              (index) => Text('Item ${index.toString()}'),
+            ),
+          ),
+          // size: FukModalSize.fullscreen,
+          leftActions: [
+            FukButton(
+              text: 'Custom Action',
+              onPressed: () {
+                // Handle custom action
+              },
+            ),
+          ],
+          rightActions: [
+            FukButton(
+              text: 'Submit',
+              onPressed: () {
+                // Handle submit action
+              },
+            ),
+            const SizedBox(width: 10),
+            FukButton(
+              text: 'Cancel',
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showLoading(BuildContext context) {
+    FukLoading.show(
+      context: context,
+      alignment: FukLoadingAlignment.bottomRight,
+      blockScreen: false,
+      title: 'Loading...',
+      showDelayMessage: true,
+      delayDuration: 60,
+      delayMessage:
+          'This is taking longer than expected. Do you want to cancel?',
+      continueButtonText: 'Continue',
+      cancelButtonText: 'Fechar',
+      onCancel: () {
+        FukLoading.hide();
+      },
+    );
+
+    // Simulate a network request or long running task
+    Future.delayed(const Duration(seconds: 10), () {
+      FukLoading.hide();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +123,14 @@ class HomePage extends StatelessWidget {
         SideBarItems(
           title: 'Dashboard',
           routeName: 'dashboard',
+          leading: const Icon(Icons.dashboard),
+          onTap: () {
+            // Handle navigation or state change here
+          },
+        ),
+        SideBarItems(
+          title: 'Notify',
+          routeName: 'notify',
           leading: const Icon(Icons.dashboard),
           onTap: () {
             // Handle navigation or state change here
@@ -113,16 +215,103 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          content: const FukContent(
-            child: Center(
-              child: Text('This is the Dashboard page.'),
+          content: FukContent(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const FukLabel(
+                    text: 'Modal:',
+                    size: FukLabelSize.small,
+                  ),
+                  FukButton(
+                    text: 'Show Modal',
+                    onPressed: () => _showModal(context),
+                  ),
+                  const SizedBox(height: 8),
+                  const FukLabel(
+                    text: 'Basic Button:',
+                    size: FukLabelSize.small,
+                  ),
+                  const SizedBox(height: 8),
+                  FukButton(
+                    text: 'Submit',
+                    onPressed: _simulateLoading,
+                    isLoading: _isLoading,
+                  ),
+                  const SizedBox(height: 16),
+                  const FukLabel(
+                    text: 'Button with Icon (Left):',
+                    size: FukLabelSize.large,
+                  ),
+                  const SizedBox(height: 8),
+                  FukButton(
+                    text: 'Submit',
+                    icon: const Icon(
+                      Icons.send,
+                      size: 16,
+                    ),
+                    onPressed: _simulateLoading,
+                    isLoading: _isLoading,
+                  ),
+                  const SizedBox(height: 16),
+                  const FukLabel(text: 'Button with Icon (Right):'),
+                  const SizedBox(height: 8),
+                  FukButton(
+                    text: 'Submit',
+                    icon: const Icon(Icons.send),
+                    iconOnRight: true,
+                    onPressed: _simulateLoading,
+                    isLoading: _isLoading,
+                  ),
+                  const SizedBox(height: 16),
+                  const FukLabel(text: 'Button with Icon (Below Text):'),
+                  const SizedBox(height: 8),
+                  FukButton(
+                    text: 'Submit',
+                    icon: const Icon(Icons.send),
+                    iconBelowText: true,
+                    onPressed: _simulateLoading,
+                    isLoading: _isLoading,
+                  ),
+                  const SizedBox(height: 16),
+                  const FukLabel(text: 'Icon Only Button:'),
+                  const SizedBox(height: 8),
+                  FukButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: _simulateLoading,
+                    isLoading: _isLoading,
+                  ),
+                  const SizedBox(height: 16),
+                  const FukLabel(
+                      text: 'Button with Custom Colors and Rounded Border:'),
+                  const SizedBox(height: 8),
+                  FukButton(
+                    text: 'Submit',
+                    icon: const Icon(Icons.send),
+                    onPressed: _simulateLoading,
+                    isLoading: _isLoading,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.white,
+                    borderRadius: 16.0,
+                  ),
+                  const SizedBox(height: 16),
+                  const FukLabel(text: 'Full Width Button:'),
+                  const SizedBox(height: 8),
+                  FukButton(
+                    text: 'Submit',
+                    onPressed: _simulateLoading,
+                    isLoading: _isLoading,
+                    fullWidth: true,
+                  ),
+                ],
+              ),
             ),
           ),
           footer: const FukFooter(text: 'Footer Content Dashboard'),
         ),
-        'profile1': FukPage(
+        'notify': FukPage(
           header: FukHeader(
-            title: 'Profile 1',
+            title: 'Notify Samples',
             // leading: const Icon(Icons.menu),
             actions: [
               IconButton(
@@ -133,9 +322,46 @@ class HomePage extends StatelessWidget {
               ),
             ],
           ),
-          content: const FukContent(
+          content: FukContent(
             child: Center(
-              child: Text('This is the Profile page.'),
+              child: Column(
+                children: [
+                  FukButton(
+                    text: 'Show Info Notification',
+                    onPressed: () => _showNotification(
+                        context, FukNotifyType.info, FukNotifyDirection.top),
+                  ),
+                  const SizedBox(height: 16),
+                  FukButton(
+                    text: 'Show Success Notification',
+                    onPressed: () => _showNotification(context,
+                        FukNotifyType.success, FukNotifyDirection.bottom),
+                  ),
+                  const SizedBox(height: 16),
+                  FukButton(
+                    text: 'Show Warning Notification',
+                    onPressed: () => _showNotification(
+                        context, FukNotifyType.warning, FukNotifyDirection.top),
+                  ),
+                  const SizedBox(height: 16),
+                  FukButton(
+                    text: 'Show Error Notification',
+                    onPressed: () => _showNotification(
+                        context, FukNotifyType.error, FukNotifyDirection.top),
+                  ),
+                  const SizedBox(height: 16),
+                  FukButton(
+                    text: 'Show Default Notification',
+                    onPressed: () => _showNotification(context,
+                        FukNotifyType.defaultType, FukNotifyDirection.bottom),
+                  ),
+                  const SizedBox(height: 16),
+                  FukButton(
+                    text: 'Show Loading',
+                    onPressed: () => _showLoading(context),
+                  )
+                ],
+              ),
             ),
           ),
           footer: const FukFooter(text: 'Footer Content'),
