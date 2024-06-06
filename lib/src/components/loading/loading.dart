@@ -9,9 +9,9 @@ enum FukLoadingAlignment {
 }
 
 class FukLoading {
-  static OverlayEntry? _currentOverlay;
+  OverlayEntry? _currentOverlay;
 
-  static void show({
+  void show({
     required BuildContext context,
     FukLoadingAlignment alignment = FukLoadingAlignment.center,
     bool blockScreen = true,
@@ -42,7 +42,7 @@ class FukLoading {
     Overlay.of(context).insert(_currentOverlay!);
   }
 
-  static void hide() {
+  void hide() {
     if (_currentOverlay != null && _currentOverlay!.mounted) {
       _currentOverlay?.remove();
       _currentOverlay = null;

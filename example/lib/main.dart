@@ -92,10 +92,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  int _counter = 0;
   void _showLoading(BuildContext context) {
-    FukLoading.show(
+    final loading = FukLoading();
+    loading.show(
       context: context,
-      alignment: FukLoadingAlignment.bottomRight,
+      alignment: _counter == 0
+          ? FukLoadingAlignment.bottomRight
+          : FukLoadingAlignment.topRight,
       blockScreen: false,
       title: 'Loading...',
       showDelayMessage: true,
@@ -105,14 +109,17 @@ class _HomePageState extends State<HomePage> {
       continueButtonText: 'Continue',
       cancelButtonText: 'Fechar',
       onCancel: () {
-        FukLoading.hide();
+        loading.hide();
       },
     );
 
     // Simulate a network request or long running task
     Future.delayed(const Duration(seconds: 10), () {
-      FukLoading.hide();
+      loading.hide();
     });
+
+    _counter = _counter + 1;
+    if (_counter > 1) _counter = 0;
   }
 
   @override
