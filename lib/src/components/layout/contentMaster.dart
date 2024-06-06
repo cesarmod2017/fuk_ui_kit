@@ -7,12 +7,16 @@ class FukContentMaster extends StatefulWidget {
   final List<SideBarItems> topItems;
   final List<SideBarItems> bottomItems;
   final Map<String, Widget> routes;
+  final String? iconImage;
+  final Icon? icon;
 
   const FukContentMaster({
     super.key,
     required this.topItems,
     required this.bottomItems,
     required this.routes,
+    this.iconImage,
+    this.icon,
   });
 
   @override
@@ -59,6 +63,8 @@ class _FukContentMasterState extends State<FukContentMaster> {
       body: Row(
         children: [
           FukSidebar(
+            icon: widget.icon,
+            iconImage: widget.iconImage,
             items: widget.topItems.map((item) {
               final SideBarItems listItem = item;
               handleTap(listItem);

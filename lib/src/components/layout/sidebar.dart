@@ -6,11 +6,15 @@ import 'package:flutter_ui_kit/flutter_ui_kit.dart';
 class FukSidebar extends StatefulWidget {
   final List<SideBarItems> items;
   final List<SideBarItems>? bottomItems;
+  final String? iconImage;
+  final Icon? icon;
 
   const FukSidebar({
     super.key,
     required this.items,
     this.bottomItems,
+    this.iconImage,
+    this.icon,
   });
 
   @override
@@ -44,10 +48,8 @@ class _FukSidebarState extends State<FukSidebar> {
       ),
       child: Column(
         children: [
-          IconButton(
-            icon: Icon(_isExpanded ? Icons.menu_open : Icons.menu),
-            onPressed: _toggleSidebar,
-          ),
+          if (widget.icon != null) widget.icon!,
+          if (widget.iconImage != null) Image.asset(widget.iconImage!),
           Expanded(
             child: ListView(
               children: widget.items.map((item) => _buildItem(item)).toList(),

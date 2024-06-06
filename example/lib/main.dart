@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FukContentMaster(
+      //icon: const Icon(Icons.production_quantity_limits),
       topItems: [
         SideBarItems(
           title: 'Dashboard',
@@ -117,7 +118,7 @@ class HomePage extends StatelessWidget {
               child: Text('This is the Dashboard page.'),
             ),
           ),
-          footer: const FukFooter(text: 'Footer Content'),
+          footer: const FukFooter(text: 'Footer Content Dashboard'),
         ),
         'profile1': FukPage(
           header: FukHeader(
