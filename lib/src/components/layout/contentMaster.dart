@@ -61,20 +61,30 @@ class _FukContentMasterState extends State<FukContentMaster> {
           FukSidebar(
             items: widget.topItems.map((item) {
               final SideBarItems listItem = item;
+              handleTap(listItem);
               return SideBarItems(
                 routeName: listItem.routeName,
                 leading: listItem.leading,
                 title: listItem.title,
                 children: listItem.children,
-                onTap: () {
-                  if (listItem.onTap != null) listItem.onTap!();
-                  if (listItem.children == null ||
+                changePage: () {
+                  if (listItem.children != null &&
                       listItem.children!.isNotEmpty) {
                     handleTap(listItem);
                   } else {
                     _selectPage(listItem.routeName);
                   }
                 },
+                onTap: listItem.onTap,
+                // onTap: () {
+                //   if (listItem.onTap != null) listItem.onTap!();
+                //   if (listItem.children != null ||
+                //       listItem.children!.isNotEmpty) {
+                //     handleTap(listItem);
+                //   } else {
+                //     _selectPage(listItem.routeName);
+                //   }
+                // },
               );
             }).toList(),
             bottomItems: widget.bottomItems.map((item) {
@@ -83,10 +93,19 @@ class _FukContentMasterState extends State<FukContentMaster> {
                 routeName: listItem.routeName,
                 leading: listItem.leading,
                 title: listItem.title,
-                onTap: () {
-                  _selectPage(listItem.routeName);
-                  if (listItem.onTap != null) listItem.onTap!();
+                changePage: () {
+                  if (listItem.children != null &&
+                      listItem.children!.isNotEmpty) {
+                    handleTap(listItem);
+                  } else {
+                    _selectPage(listItem.routeName);
+                  }
                 },
+                onTap: listItem.onTap,
+                // onTap: () {
+                //   _selectPage(listItem.routeName);
+                //   if (listItem.onTap != null) listItem.onTap!();
+                // },
               );
             }).toList(),
           ),

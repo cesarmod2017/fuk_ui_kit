@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_ui_kit/flutter_ui_kit.dart';
 
@@ -16,29 +18,19 @@ class FukSidebar extends StatefulWidget {
 }
 
 class _FukSidebarState extends State<FukSidebar> {
-  bool _isExpanded = true;
-  final Map<String, bool> _expandedState = {};
+  bool _isExpanded = false;
 
   void _toggleSidebar() {
-    if (mounted) {
-      setState(() {
-        _isExpanded = !_isExpanded;
-      });
-    }
-  }
-
-  void _toggleExpanded(String key) {
-    if (mounted) {
-      setState(() {
-        _expandedState[key] = !(_expandedState[key] ?? false);
-      });
-    }
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: _isExpanded ? 250.0 : 70.0,
+      width: 70.0,
+      height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
@@ -75,84 +67,83 @@ class _FukSidebarState extends State<FukSidebar> {
 
   Widget _buildItem(SideBarItems item, {int level = 0}) {
     bool hasChildren = item.children != null && item.children!.isNotEmpty;
-    bool isExpanded = _expandedState[item.title] ?? false;
 
-    return Column(
-      children: [
-        _isExpanded
-            ? ListTile(
-                leading: SizedBox(
-                  width: 40.0, // Ajuste este valor conforme necessário
+    return PopupMenuButton<SideBarItems>(
+      tooltip: item.title,
+      onSelected: (selectedItem) {
+        log(selectedItem.routeName);
+        if (selectedItem.changePage != null) {
+          selectedItem.changePage!();
+        } else {
+          log('No changePage function found for ${selectedItem.routeName}');
+        }
+      },
+      itemBuilder: (context) => hasChildren
+          ? _buildPopupMenuItems(item.children!)
+          : [
+              PopupMenuItem<SideBarItems>(
+                value: item,
+                child: SizedBox(
+                  width: 200,
+                  height: 50,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 40, // Define a width for the leading widget
+                        child: item.leading,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(child: Text(item.title)),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+      child: SizedBox(
+        width: 200,
+        height: 50,
+        child: Row(
+          children: [
+            SizedBox(
+              width: 40, // Define a width for the leading widget
+              child: item.leading,
+            ),
+            const SizedBox(width: 10),
+            if (_isExpanded) Expanded(child: Text(item.title)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<PopupMenuEntry<SideBarItems>> _buildPopupMenuItems(
+      List<SideBarItems> items) {
+    List<PopupMenuEntry<SideBarItems>> popupItems = [];
+    for (var item in items) {
+      bool hasChildren = item.children != null && item.children!.isNotEmpty;
+      popupItems.add(
+        PopupMenuItem<SideBarItems>(
+          value: item,
+          child: SizedBox(
+            width: 200,
+            height: 50,
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 40, // Define a width for the leading widget
                   child: item.leading,
                 ),
-                title: _isExpanded ? Text(item.title) : null,
-                onTap: () {
-                  if (item.onTap != null) item.onTap!();
-                  if (item.changePage != null) item.changePage!();
-                  if (hasChildren) _toggleExpanded(item.title);
-                },
-                trailing: hasChildren
-                    ? Icon(isExpanded ? Icons.expand_less : Icons.expand_more)
-                    : null,
-              )
-            : level > 0
-                ? const SizedBox.shrink()
-                : Theme(
-                    data: Theme.of(context).copyWith(
-                      tooltipTheme: Theme.of(context).tooltipTheme.copyWith(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.surface,
-                              borderRadius: BorderRadius.circular(4.0),
-                            ),
-                            textStyle: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface,
-                                ),
-                          ),
-                    ),
-                    child: Tooltip(
-                      message: item.title.toString(),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (item.onTap != null) item.onTap!();
-                          if (item.changePage != null) item.changePage!();
-                          //aqui se o isExpanded for false, ele vai abrir o popup context menu dos children
-                          if (!isExpanded && hasChildren) {
-                            PopupMenuButton<String>(
-                              onSelected: (String result) {
-                                setState(() {});
-                              },
-                              itemBuilder: (BuildContext context) =>
-                                  <PopupMenuEntry<String>>[
-                                const PopupMenuItem<String>(
-                                  value: "String1",
-                                  child: Text('Option 1'),
-                                ),
-                                const PopupMenuItem<String>(
-                                  value: "String2",
-                                  child: Text('Option 2'),
-                                ),
-                              ],
-                            );
-                          }
-                        },
-                        child: item.leading as Icon,
-                      ),
-                    ),
-                  ),
-        if (hasChildren && isExpanded)
-          Padding(
-            padding: EdgeInsets.only(left: _isExpanded ? 16.0 : 0.0),
-            child: Column(
-              children: item.children!
-                  .map((child) => _buildItem(child, level: level + 1))
-                  .toList(),
+                const SizedBox(width: 10),
+                Expanded(child: Text(item.title)),
+              ],
             ),
           ),
-      ],
-    );
+        ),
+      );
+      if (hasChildren) {
+        popupItems.addAll(_buildPopupMenuItems(item.children!));
+      }
+    }
+    return popupItems;
   }
 }
