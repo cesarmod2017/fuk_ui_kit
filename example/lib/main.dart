@@ -11,7 +11,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
+      theme: ThemeData.dark(useMaterial3: true),
       debugShowCheckedModeBanner: false,
       home: const HomePage(),
     );
@@ -27,6 +27,60 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _isLoading = false;
+
+  int _currentPage = 1;
+  int _totalPage = 10;
+
+  final List<DataGridColumn> _columns = [
+    DataGridColumn(title: 'ID', width: 80, sortable: false, field: 'id'),
+    DataGridColumn(title: 'Name', width: 150, sortable: true, field: 'name'),
+    DataGridColumn(title: 'Age', width: 200, sortable: true, field: 'age'),
+  ];
+
+  List<Map<String, dynamic>> _data = List.generate(
+    100,
+    (index) => {
+      'id': index + 1,
+      'name': 'Name ${index + 1}',
+      'age': 20 + (index % 10),
+    },
+  );
+
+  void _onPageChange(int page) {
+    setState(() {
+      _currentPage = page;
+    });
+  }
+
+  void _onSort(String field, bool isAscending) {
+    setState(() {
+      if (isAscending) {
+        _data.sort((a, b) => a[field].compareTo(b[field]));
+      } else {
+        _data.sort((a, b) => b[field].compareTo(a[field]));
+      }
+    });
+  }
+
+  void _onSearch(String query) {
+    String date = DateTime.now().toIso8601String();
+    setState(() {
+      _data = List.generate(
+        15,
+        (index) => {
+          'id': index + 1,
+          'name': 'Name ${index + 1} -- $date',
+          'age': 20 + (index % 10),
+        },
+      );
+      _totalPage = 5;
+      // Implemente a lógica de busca
+    });
+  }
+
+  void _onAdvancedSearch() {
+    // Implemente a lógica de busca avançada
+  }
 
   void _simulateLoading() {
     setState(() {
@@ -139,6 +193,14 @@ class _HomePageState extends State<HomePage> {
           title: 'Notify',
           routeName: 'notify',
           leading: const Icon(Icons.dashboard),
+          onTap: () {
+            // Handle navigation or state change here
+          },
+        ),
+        SideBarItems(
+          title: 'Data Grid',
+          routeName: 'grid',
+          leading: const Icon(Icons.grid_3x3_outlined),
           onTap: () {
             // Handle navigation or state change here
           },
@@ -369,6 +431,40 @@ class _HomePageState extends State<HomePage> {
                   )
                 ],
               ),
+            ),
+          ),
+          footer: const FukFooter(text: 'Footer Content'),
+          aside: Container(
+            color: Colors.grey[800],
+            child: const Center(
+              child: Text('Aside Content'),
+            ),
+          ),
+        ),
+        'grid': FukPage(
+          header: FukHeader(
+            title: 'Data Grid Samples',
+            // leading: const Icon(Icons.menu),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  // Handle settings button press
+                },
+              ),
+            ],
+          ),
+          content: FukContent(
+            child: FukDataGrid(
+              columns: _columns,
+              data: _data,
+              currentPage: _currentPage,
+              totalPage: _totalPage,
+              onPageChange: _onPageChange,
+              onSort: _onSort,
+              onSearch: _onSearch,
+              onAdvancedSearch: _onAdvancedSearch,
+              showAdvancedSearch: true,
             ),
           ),
           footer: const FukFooter(text: 'Footer Content'),

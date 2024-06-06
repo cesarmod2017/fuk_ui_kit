@@ -1,6 +1,7 @@
 library fuk_ui_kit;
 
 export 'src/components/buttons/button.dart';
+export 'src/components/grid/data_grid.dart';
 export 'src/components/label/label.dart';
 export 'src/components/layout/aside.dart';
 export 'src/components/layout/content.dart';
