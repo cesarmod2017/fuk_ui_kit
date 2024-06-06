@@ -17,4 +17,18 @@ class SideBarItems {
     this.children,
     this.changePage,
   });
+
+  List<PopupMenuItem> toPopupMenuItems() {
+    return [
+      PopupMenuItem(
+        child: ListTile(
+          leading: leading,
+          title: Text(title),
+          onTap: onTap,
+        ),
+      ),
+      if (children != null)
+        ...children!.expand((child) => child.toPopupMenuItems())
+    ];
+  }
 }

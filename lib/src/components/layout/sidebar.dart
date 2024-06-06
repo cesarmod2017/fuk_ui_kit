@@ -119,6 +119,25 @@ class _FukSidebarState extends State<FukSidebar> {
                         onTap: () {
                           if (item.onTap != null) item.onTap!();
                           if (item.changePage != null) item.changePage!();
+                          //aqui se o isExpanded for false, ele vai abrir o popup context menu dos children
+                          if (!isExpanded && hasChildren) {
+                            PopupMenuButton<String>(
+                              onSelected: (String result) {
+                                setState(() {});
+                              },
+                              itemBuilder: (BuildContext context) =>
+                                  <PopupMenuEntry<String>>[
+                                const PopupMenuItem<String>(
+                                  value: "String1",
+                                  child: Text('Option 1'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: "String2",
+                                  child: Text('Option 2'),
+                                ),
+                              ],
+                            );
+                          }
                         },
                         child: item.leading as Icon,
                       ),
