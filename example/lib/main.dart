@@ -34,10 +34,10 @@ class _HomePageState extends State<HomePage> {
   int _totalPage = 10;
 
   final List<DataGridColumn> _columns = [
-    DataGridColumn(title: 'ID', width: 80, sortable: false, field: 'id'),
-    DataGridColumn(title: 'Name', width: 350, sortable: true, field: 'name'),
+    DataGridColumn(title: 'ID', width: 50, sortable: false, field: 'id'),
+    DataGridColumn(title: 'Name', width: 800, sortable: true, field: 'name'),
     DataGridColumn(title: 'Age', width: 100, sortable: true, field: 'age'),
-    DataGridColumn(title: '#', width: 100, sortable: false, field: 'action'),
+    DataGridColumn(title: '#', width: 120, sortable: false, field: 'action'),
   ];
 
   List<Map<String, dynamic>> _data = List.generate(
@@ -482,12 +482,12 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           footer: const FukFooter(text: 'Footer Content'),
-          aside: Container(
-            color: Colors.grey[800],
-            child: const Center(
-              child: Text('Aside Content'),
-            ),
-          ),
+          // aside: Container(
+          //   color: Colors.grey[800],
+          //   child: const Center(
+          //     child: Text('Aside Content'),
+          //   ),
+          // ),
         ),
         'profile22': FukPage(
           header: FukHeader(

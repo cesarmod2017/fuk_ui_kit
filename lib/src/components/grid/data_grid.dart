@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class DataGridColumn {
   final String title;
-  final double width;
+  final double? width;
   final bool sortable;
   final String field;
   final TextStyle? textStyle;
 
   DataGridColumn({
     required this.title,
-    required this.width,
+    this.width,
     this.sortable = false,
     required this.field,
     this.textStyle,
@@ -59,14 +59,58 @@ class FukDataGridState extends State<FukDataGrid> {
   String? _sortedColumn;
   bool _isAscending = true;
   int _hoveredIndex = -1;
+  double widthMax = 0.0;
+
+  final ScrollController scrollHeader = ScrollController();
+  final ScrollController scrollBody = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollHeader.addListener(() {
+      scrollBody.jumpTo(scrollHeader.offset);
+    });
+    scrollBody.addListener(() {
+      scrollHeader.jumpTo(scrollBody.offset);
+    });
+  }
+
+  void setWidthMax() {
+    widthMax = 0;
+    for (var column in widget.columns) {
+      widthMax += column.width ?? 200;
+    }
+    if (widthMax < MediaQuery.of(context).size.width) {
+      widthMax = MediaQuery.of(context).size.width;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    setWidthMax();
     return Column(
       children: [
         _buildSearchBar(),
-        _buildHeader(),
-        Expanded(child: _buildBody()),
+        Expanded(
+          //width: MediaQuery.of(context).size.width * 0.8,
+          child: RawScrollbar(
+            thumbVisibility: false,
+            controller: scrollHeader,
+            thickness: 8.0,
+            thumbColor: Theme.of(context).colorScheme.primary,
+            radius: const Radius.circular(50),
+            minThumbLength: 50,
+            scrollbarOrientation: ScrollbarOrientation.bottom,
+            child: Column(
+              children: [
+                _buildHeader(),
+                Expanded(child: _buildBody()),
+                //_buildHorizontalScrollbar(),
+              ],
+            ),
+          ),
+        ),
         _buildFooter(),
       ],
     );
@@ -107,113 +151,131 @@ class FukDataGridState extends State<FukDataGrid> {
   }
 
   Widget _buildHeader() {
-    return Container(
-      color: Theme.of(context).colorScheme.primaryContainer,
-      child: Row(
-        children: widget.columns.map((column) {
-          return GestureDetector(
-            onTap: column.sortable
-                ? () {
-                    setState(() {
-                      _sortedColumn = column.field;
-                      _isAscending = !_isAscending;
-                      widget.onSort?.call(column.field, _isAscending);
-                    });
-                  }
-                : null,
-            child: Container(
-              width: column.width,
-              padding: const EdgeInsets.all(8.0),
-              decoration: widget.showColumnBorders == true
-                  ? BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
-                        ),
-                      ),
-                    )
+    return SingleChildScrollView(
+      controller: scrollHeader,
+      scrollDirection: Axis.horizontal,
+      child: Container(
+        width: widthMax,
+        color: Theme.of(context).colorScheme.primaryContainer,
+        child: Row(
+          children: widget.columns.map((column) {
+            return GestureDetector(
+              onTap: column.sortable
+                  ? () {
+                      setState(() {
+                        _sortedColumn = column.field;
+                        _isAscending = !_isAscending;
+                        widget.onSort?.call(column.field, _isAscending);
+                      });
+                    }
                   : null,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    column.title,
-                    style: column.textStyle ??
-                        Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                  ),
-                  if (column.sortable)
-                    Icon(
-                      _sortedColumn == column.field
-                          ? (_isAscending
-                              ? Icons.arrow_upward
-                              : Icons.arrow_downward)
-                          : Icons.sort,
-                      size: 16,
+              child: Container(
+                width: column.width ?? 150,
+                padding: const EdgeInsets.all(8.0),
+                decoration: widget.showColumnBorders == true
+                    ? BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Theme.of(context).dividerColor,
+                          ),
+                        ),
+                      )
+                    : null,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      column.title,
+                      style: column.textStyle ??
+                          Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              ),
                     ),
-                ],
+                    if (column.sortable)
+                      Icon(
+                        _sortedColumn == column.field
+                            ? (_isAscending
+                                ? Icons.arrow_upward
+                                : Icons.arrow_downward)
+                            : Icons.sort,
+                        size: 16,
+                      ),
+                  ],
+                ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
 
   Widget _buildBody() {
-    return ListView.builder(
-      itemCount: widget.data.length,
-      itemBuilder: (context, index) {
-        final row = widget.data[index];
-        final isHovered =
-            widget.hoverHighlight == true && _hoveredIndex == index;
-        final isStriped = widget.stripedRows == true && index % 2 == 0;
-        return MouseRegion(
-          onEnter: (_) {
-            setState(() {
-              _hoveredIndex = index;
-            });
-          },
-          onExit: (_) {
-            setState(() {
-              _hoveredIndex = -1;
-            });
-          },
-          child: Container(
-            color: isHovered
-                ? Theme.of(context).hoverColor
-                : isStriped
-                    ? Theme.of(context).colorScheme.surfaceVariant
-                    : Theme.of(context).colorScheme.background,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: widget.columns.map((column) {
-                    return Container(
-                      width: column.width,
-                      padding: const EdgeInsets.all(8.0),
-                      child: row[column.field] is Widget
-                          ? row[column.field]
-                          : Text(
-                              row[column.field]?.toString() ?? '',
-                              style: column.textStyle,
-                            ),
-                    );
-                  }).toList(),
+    return ScrollConfiguration(
+      behavior: ScrollConfiguration.of(context).copyWith(
+        scrollbars: true,
+      ),
+      child: SingleChildScrollView(
+        controller: scrollBody,
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: widthMax,
+          child: ListView.builder(
+            itemCount: widget.data.length,
+            itemBuilder: (context, index) {
+              final row = widget.data[index];
+              final isHovered =
+                  widget.hoverHighlight == true && _hoveredIndex == index;
+              final isStriped = widget.stripedRows == true && index % 2 == 0;
+              return MouseRegion(
+                onEnter: (_) {
+                  setState(() {
+                    _hoveredIndex = index;
+                  });
+                },
+                onExit: (_) {
+                  setState(() {
+                    _hoveredIndex = -1;
+                  });
+                },
+                child: Container(
+                  color: isHovered
+                      ? Theme.of(context).hoverColor
+                      : isStriped
+                          ? Theme.of(context).colorScheme.surfaceVariant
+                          : Theme.of(context).colorScheme.background,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: widget.columns.map((column) {
+                          return Container(
+                            width: column.width ?? 150,
+                            padding: const EdgeInsets.all(8.0),
+                            child: row[column.field] is Widget
+                                ? row[column.field]
+                                : Text(
+                                    row[column.field]?.toString() ?? '',
+                                    style: column.textStyle,
+                                  ),
+                          );
+                        }).toList(),
+                      ),
+                      if (widget.showColumnBorders == true)
+                        Container(
+                          height: 1,
+                          width: double.infinity,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                    ],
+                  ),
                 ),
-                if (widget.showColumnBorders == true)
-                  Container(
-                      height: 1,
-                      width: double.infinity,
-                      color: Theme.of(context).colorScheme.onSurface),
-              ],
-            ),
+              );
+            },
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
