@@ -8,7 +8,7 @@ Add `fuk_ui_kit` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  fuk_ui_kit: ^0.0.1
+  fuk_ui_kit: ^0.0.5
 ```
 
 ## Usage
@@ -187,6 +187,37 @@ FukDataGrid(
       DataCell(Text('29')),
     ]),
   ],
+)
+```
+
+### FukTextFile
+
+The `FukTextFile` component allows you to select files or folders with specific configurations.
+
+```dart
+const FukTextFile(
+  isRequired: true,
+  allowedFileTypes: [AllowedFileType.folder],
+  icon: Icon(Icons.folder),
+  label: 'Select a Folder',
+  decoration: InputDecoration(
+    border: OutlineInputBorder(),
+  ),
+)
+```
+
+### FukTextField
+
+The `FukTextField` component allows you to create text fields with customizable labels and placeholders.
+
+```dart
+const FukTextField(
+  label: 'Name',
+  placeholder: 'Enter your name',
+  isRequired: true,
+  decoration: InputDecoration(
+    border: OutlineInputBorder(),
+  ),
 )
 ```
 

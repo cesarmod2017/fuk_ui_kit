@@ -5,6 +5,7 @@ import 'package:fuk_ui_kit_sample/samples/sample_grid.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_image_editor.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_modal.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_notify.dart';
+import 'package:fuk_ui_kit_sample/samples/sample_textfield.dart';
 
 void main() {
   runApp(const MainApp());
@@ -66,6 +67,12 @@ class _HomePageState extends State<HomePage> {
           leading: const Icon(Icons.picture_in_picture),
           onTap: () {},
         ),
+        SideBarItems(
+          title: 'Text Field',
+          routeName: 'textfield',
+          leading: const Icon(Icons.text_fields),
+          onTap: () {},
+        ),
       ],
       bottomItems: [
         SideBarItems(
@@ -81,6 +88,7 @@ class _HomePageState extends State<HomePage> {
         'notify': SampleNotifyPage(),
         'grid': SampleGridPage(),
         'imageeditor': SampleImageEditorPage(),
+        'textfield': SampleTextFieldPage(),
       },
     );
   }

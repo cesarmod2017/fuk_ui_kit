@@ -14,4 +14,6 @@ export 'src/components/layout/sidebar.dart';
 export 'src/components/loading/loading.dart';
 export 'src/components/modal/modal.dart';
 export 'src/components/notify/notify.dart';
+export 'src/components/textfield/fuk_text_field.dart';
+export 'src/components/textfield/fuk_text_file.dart';
 export 'src/models/sidebar_items.dart';
