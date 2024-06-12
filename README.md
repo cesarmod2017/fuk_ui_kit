@@ -1,189 +1,29 @@
-# Flutter UI Kit
+# fuk_ui_kit
 
-A Flutter UI Kit for desktop and web applications.
+A Flutter package for building efficient and elegant user interfaces.
 
 ## Installation
 
-Add this to your package's `pubspec.yaml` file:
+Add `fuk_ui_kit` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
   fuk_ui_kit: ^0.0.1
 ```
 
-### Usage
+## Usage
 
-Import the Package
+### Import
+
+Import the package in your Dart file:
 
 ```dart
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 ```
-
-### FukSidebar
-
-The FukSidebar widget allows you to create a sidebar with hierarchical menu items.
-
-## Example
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:fuk_ui_kit/fuk_ui_kit.dart';
-
-void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark(),
-      home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          FukSidebar(
-            items: [
-              SideBarItems(
-                title: 'Dashboard',
-                leading: const Icon(Icons.dashboard),
-                changePage: () {
-                  // Handle navigation or state change here
-                },
-              ),
-              SideBarItems(
-                title: 'Profile',
-                leading: const Icon(Icons.person),
-                children: [
-                  SideBarItems(
-                    title: 'Profile 1',
-                    leading: const Icon(Icons.person_outline),
-                    changePage: () {
-                      // Handle navigation or state change here
-                    },
-                  ),
-                  SideBarItems(
-                    title: 'Profile 2',
-                    leading: const Icon(Icons.person_outline),
-                    children: [
-                      SideBarItems(
-                        title: 'Profile 2.1',
-                        leading: const Icon(Icons.person_add),
-                        changePage: () {
-                          // Handle navigation or state change here
-                        },
-                      ),
-                      SideBarItems(
-                        title: 'Profile 2.2',
-                        leading: const Icon(Icons.person_add),
-                        changePage: () {
-                          // Handle navigation or state change here
-                        },
-                      ),
-                    ],
-                  ),
-                  SideBarItems(
-                    title: 'Profile 3',
-                    leading: const Icon(Icons.person_outline),
-                    changePage: () {
-                      // Handle navigation or state change here
-                    },
-                  ),
-                ],
-              ),
-            ],
-            bottomItems: [
-              SideBarItems(
-                title: 'Minha Conta',
-                leading: const Icon(Icons.account_circle),
-                changePage: () {
-                  // Handle navigation or state change here
-                },
-              ),
-              SideBarItems(
-                title: 'Sair',
-                leading: const Icon(Icons.exit_to_app),
-                changePage: () {
-                  // Handle navigation or state change aqui
-                },
-              ),
-            ],
-          ),
-          Expanded(
-            child: Center(
-              child: Text('Select an option from the sidebar'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-```
-
-### FukPage
-
-The FukPage widget allows you to create a structured page layout with a header, content, footer, and an optional aside.
-
-## Example
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:fuk_ui_kit/fuk_ui_kit.dart';
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FukPage(
-      header: FukHeader(
-        title: 'Dashboard',
-        leading: const Icon(Icons.menu),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              // Handle settings button press
-            },
-          ),
-        ],
-      ),
-      content: const FukContent(
-        child: Center(
-          child: Text('This is the Dashboard page.'),
-        ),
-      ),
-      footer: const FukFooter(text: 'Footer Content'),
-      aside: Container(
-        color: Colors.grey[800],
-        child: const Center(
-          child: Text('Aside Content'),
-        ),
-      ),
-    );
-  }
-}
-
-```
-
-## Components
 
 ### FukHeader
 
-A header component for your pages.
+The `FukHeader` component allows you to add a customizable header to your application.
 
 ```dart
 FukHeader(
@@ -202,331 +42,156 @@ FukHeader(
 
 ### FukContent
 
-A content component for your pages.
+The `FukContent` component is used to display the main content of the page.
 
 ```dart
 FukContent(
-    child: Center(
-        child: Text('This is the content area.'),
-    ),
+  child: Center(
+    child: Text('This is the content area.'),
+  ),
+)
+```
+
+### FukButton
+
+The `FukButton` component allows you to create stylish buttons.
+
+```dart
+FukButton(
+  text: 'Show Info Notification',
+  onPressed: () {
+    // Handle button press
+  },
 )
 ```
 
 ### FukFooter
 
-A footer component for your pages.
+The `FukFooter` component adds a footer to your application.
 
 ```dart
-    FukFooter(text: 'Footer Content')
+FukFooter(
+  text: 'Footer Content',
+)
 ```
 
-### FukButton
+### FukNotify
 
-The FukButton widget provides several configurations, including different layouts for text and icon, loading state, custom colors, rounded borders, and full-width option.
-
-#### Example
+The `FukNotify` component allows you to display toast-style notifications.
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:flutter_ui_kit/flutter_ui_kit.dart';
-
-void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark(),
-      home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  bool _isLoading = false;
-
-  void _simulateLoading() {
-    setState(() {
-      _isLoading = true;
-    });
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _isLoading = false;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Flutter UI Kit Example')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const FukLabel(text: 'Basic Button:'),
-            const SizedBox(height: 8),
-            FukButton(
-              text: 'Submit',
-              onPressed: _simulateLoading,
-              isLoading: _isLoading,
-            ),
-            const SizedBox(height: 16),
-            const FukLabel(text: 'Button with Icon (Left):'),
-            const SizedBox(height: 8),
-            FukButton(
-              text: 'Submit',
-              icon: Icons.send,
-              onPressed: _simulateLoading,
-              isLoading: _isLoading,
-            ),
-            const SizedBox(height: 16),
-            const FukLabel(text: 'Button with Icon (Right):'),
-            const SizedBox(height: 8),
-            FukButton(
-              text: 'Submit',
-              icon: Icons.send,
-              iconOnRight: true,
-              onPressed: _simulateLoading,
-              isLoading: _isLoading,
-            ),
-            const SizedBox(height: 16),
-            const FukLabel(text: 'Button with Icon (Below Text):'),
-            const SizedBox(height: 8),
-            FukButton(
-              text: 'Submit',
-              icon: Icons.send,
-              iconBelowText: true,
-              onPressed: _simulateLoading,
-              isLoading: _isLoading,
-            ),
-            const SizedBox(height: 16),
-            const FukLabel(text: 'Icon Only Button:'),
-            const SizedBox(height: 8),
-            FukButton(
-              icon: Icons.send,
-              onPressed: _simulateLoading,
-              isLoading: _isLoading,
-            ),
-            const SizedBox(height: 16),
-            const FukLabel(text: 'Button with Custom Colors and Rounded Border:'),
-            const SizedBox(height: 8),
-            FukButton(
-              text: 'Submit',
-              icon: Icons.send,
-              onPressed: _simulateLoading,
-              isLoading: _isLoading,
-              backgroundColor: Colors.green,
-              textColor: Colors.white,
-              borderRadius: 16.0,
-            ),
-            const SizedBox(height: 16),
-            const FukLabel(text: 'Full Width Button:'),
-            const SizedBox(height: 8),
-            FukButton(
-              text: 'Submit',
-              onPressed: _simulateLoading,
-              isLoading: _isLoading,
-              fullWidth: true,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
+FukNotify.show(
+  context,
+  type: FukNotifyType.info,
+  direction: FukNotifyDirection.top,
+  message: 'This is an info notification.',
+)
 ```
 
-### FukLabel
+### FukContentMaster
 
-The FukLabel widget allows you to display text with configurable sizes (small, medium, large).
-
-#### Example
+The `FukContentMaster` component manages the main layout of the application, including the sidebar and the main content.
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:flutter_ui_kit/flutter_ui_kit.dart';
-
-void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark(),
-      home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Flutter UI Kit Example')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const FukLabel(
-              text: 'Small Label',
-              size: FukLabelSize.small,
-            ),
-            const SizedBox(height: 8),
-            const FukLabel(
-              text: 'Medium Label (Default)',
-            ),
-            const SizedBox(height: 8),
-            const FukLabel(
-              text: 'Large Label',
-              size: FukLabelSize.large,
-            ),
-            const SizedBox(height: 16),
-            const FukLabel(
-              text: 'Custom Styled Label',
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
+FukContentMaster(
+  topItems: [
+    SideBarItems(
+      title: 'Buttons',
+      routeName: 'buttons',
+      leading: const Icon(Icons.smart_button),
+      onTap: () {},
+    ),
+    // Other items...
+  ],
+  content: FukContent(
+    child: Center(
+      child: Column(
+        children: [
+          FukButton(
+            text: 'Show Info Notification',
+            onPressed: () {
+              // Handle button press
+            },
+          ),
+          // Other buttons...
+        ],
       ),
-    );
-  }
-}
-
+    ),
+  ),
+  footer: const FukFooter(text: 'Footer Content'),
+  aside: Container(
+    color: Colors.grey[800],
+    child: const Center(
+      child: Text('Aside Content'),
+    ),
+  ),
+)
 ```
 
 ### FukModal
 
-The FukModal widget provides a customizable modal dialog with header, content, and footer sections.
-
-#### Example
+The `FukModal` component is used to display modal dialogs in your application.
 
 ```dart
-import 'package:flutter/material.dart';
-import 'package:flutter_ui_kit/flutter_ui_kit.dart';
-
-void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark(),
-      home: const HomePage(),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  void _showModal(BuildContext context, FukModalSize size) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return FukModal(
-          title: 'Modal Title',
-          content: const Text('This is the content of the modal. ' * 20),
-          leftActions: [
-            FukButton(
-              text: 'Custom Action',
-              onPressed: () {
-                // Handle custom action
-              },
-            ),
-          ],
-          rightActions: [
-            FukButton(
-              text: 'Cancel',
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            FukButton(
-              text: 'Submit',
-              onPressed: () {
-                // Handle submit action
-              },
-            ),
-          ],
-          size: size,
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Flutter UI Kit Example')),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FukButton(
-              text: 'Show Small Modal',
-              onPressed: () => _showModal(context, FukModalSize.small),
-            ),
-            const SizedBox(height: 16),
-            FukButton(
-              text: 'Show Medium Modal',
-              onPressed: () => _showModal(context, FukModalSize.medium),
-            ),
-            const SizedBox(height: 16),
-            FukButton(
-              text: 'Show Large Modal',
-              onPressed: () => _showModal(context, FukModalSize.large),
-            ),
-            const SizedBox(height: 16),
-            FukButton(
-              text: 'Show Fullscreen Modal',
-              onPressed: () => _showModal(context, FukModalSize.fullscreen),
-            ),
-          ],
+// Show the modal
+showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return FukModal(
+      title: 'Modal Title',
+      content: Text('This is the modal content.'),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(); // Close the modal
+          },
+          child: Text('Close'),
         ),
-      ),
+        ElevatedButton(
+          onPressed: () {
+            // Handle action
+          },
+          child: Text('Save'),
+        ),
+      ],
     );
-  }
-}
-
+  },
+);
 ```
 
-### Features
+### FukDataGrid
 
-Sidebar with hierarchical menus Page structure with header, content, footer, and optional aside Easy integration with Flutter applications Contributing Contributions are welcome! Please open an issue or submit a pull request on GitHub.
+The `FukDataGrid` component is used to display data in a grid format.
 
-### License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-```perl
-    Este exemplo de `README.md` fornece uma visão geral clara do seu package, instruções de instalação, exemplos de uso e informações adicionais úteis. Ajuste conforme necessário para atender aos seus requisitos específicos. Se precisar de mais alguma coisa, estarei à disposição!
+```dart
+FukDataGrid(
+  columns: const [
+    DataColumn(label: Text('ID')),
+    DataColumn(label: Text('Name')),
+    DataColumn(label: Text('Age')),
+  ],
+  rows: const [
+    DataRow(cells: [
+      DataCell(Text('1')),
+      DataCell(Text('Alice')),
+      DataCell(Text('23')),
+    ]),
+    DataRow(cells: [
+      DataCell(Text('2')),
+      DataCell(Text('Bob')),
+      DataCell(Text('34')),
+    ]),
+    DataRow(cells: [
+      DataCell(Text('3')),
+      DataCell(Text('Charlie')),
+      DataCell(Text('29')),
+    ]),
+  ],
+)
 ```
+
+## Examples
+
+For more usage examples, check out the example code in the `example` directory.
+
+---

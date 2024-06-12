@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_buttons.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_grid.dart';
+import 'package:fuk_ui_kit_sample/samples/sample_image_editor.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_modal.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_notify.dart';
 
@@ -59,6 +60,12 @@ class _HomePageState extends State<HomePage> {
           leading: const Icon(Icons.grid_view),
           onTap: () {},
         ),
+        SideBarItems(
+          title: 'Image Editor',
+          routeName: 'imageeditor',
+          leading: const Icon(Icons.picture_in_picture),
+          onTap: () {},
+        ),
       ],
       bottomItems: [
         SideBarItems(
@@ -73,6 +80,7 @@ class _HomePageState extends State<HomePage> {
         'modal': SampleModalPage(),
         'notify': SampleNotifyPage(),
         'grid': SampleGridPage(),
+        'imageeditor': SampleImageEditorPage(),
       },
     );
   }
