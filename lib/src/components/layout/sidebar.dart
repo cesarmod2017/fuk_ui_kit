@@ -29,7 +29,7 @@ class FukSidebarState extends State<FukSidebar> {
       height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).shadowColor.withOpacity(0.12),

@@ -127,9 +127,8 @@ class _FukNotifyWidget extends StatelessWidget {
                                   .textTheme
                                   .titleSmall
                                   ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                               textAlign: message == null
                                   ? TextAlign.center
@@ -141,7 +140,7 @@ class _FukNotifyWidget extends StatelessWidget {
                               Icons.close,
                               size: 16,
                             ),
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: Theme.of(context).colorScheme.onSurface,
                             onPressed: onDismiss,
                           ),
                         ],
@@ -154,8 +153,7 @@ class _FukNotifyWidget extends StatelessWidget {
                               .textTheme
                               .bodyMedium
                               ?.copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                         ),
                       ],

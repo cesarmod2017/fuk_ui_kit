@@ -8,7 +8,7 @@ Add `fuk_ui_kit` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  fuk_ui_kit: ^0.0.5
+  fuk_ui_kit: ^0.0.6
 ```
 
 ## Usage

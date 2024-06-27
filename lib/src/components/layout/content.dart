@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class FukContent extends StatelessWidget {
   final Widget child;
+  final Color? backgroundColor;
 
   const FukContent({
     super.key,
     required this.child,
+    this.backgroundColor,
   });
 
   @override
@@ -13,7 +15,8 @@ class FukContent extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondaryContainer,
+        color:
+            backgroundColor ?? Theme.of(context).colorScheme.surfaceContainer,
       ),
       child: child,
     );

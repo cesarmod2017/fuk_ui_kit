@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 
@@ -95,7 +97,7 @@ class _SampleTextFieldPageState extends State<SampleTextFieldPage> {
                   icon: const Icon(Icons.email),
                   onIconPressed: () {
                     // Custom action for icon
-                    print('Email icon pressed');
+                    log('Email icon pressed');
                   },
                 ),
                 const SizedBox(height: 20),
@@ -110,7 +112,7 @@ class _SampleTextFieldPageState extends State<SampleTextFieldPage> {
                   isObscure: true,
                   onIconPressed: () {
                     // Custom action for icon
-                    print('Visibility icon pressed');
+                    log('Visibility icon pressed');
                   },
                 ),
               ],

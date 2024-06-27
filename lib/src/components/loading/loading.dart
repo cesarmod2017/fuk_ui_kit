@@ -141,7 +141,7 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20.0),
           boxShadow: const [
             BoxShadow(
@@ -167,7 +167,7 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
                     Text(
                       widget.title!,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                     ),
                   ],
@@ -186,7 +186,7 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
                     Text(
                       widget.title!,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                     ),
                   ],
@@ -200,7 +200,7 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(8.0),
         boxShadow: const [
           BoxShadow(
@@ -216,7 +216,7 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
           Text(
             widget.delayMessage,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
           ),
           const SizedBox(height: 16),

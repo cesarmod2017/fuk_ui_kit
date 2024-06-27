@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_buttons.dart';
+import 'package:fuk_ui_kit_sample/samples/sample_codes.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_grid.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_image_editor.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_modal.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_notify.dart';
+import 'package:fuk_ui_kit_sample/samples/sample_tabs.dart';
 import 'package:fuk_ui_kit_sample/samples/sample_textfield.dart';
 
 void main() {
@@ -17,7 +19,9 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(useMaterial3: true),
+      theme: ThemeData.dark(
+        useMaterial3: true,
+      ),
       debugShowCheckedModeBanner: false,
       home: const HomePage(),
     );
@@ -62,6 +66,12 @@ class _HomePageState extends State<HomePage> {
           onTap: () {},
         ),
         SideBarItems(
+          title: 'Codes',
+          routeName: 'code',
+          leading: const Icon(Icons.code),
+          onTap: () {},
+        ),
+        SideBarItems(
           title: 'Image Editor',
           routeName: 'imageeditor',
           leading: const Icon(Icons.picture_in_picture),
@@ -71,6 +81,12 @@ class _HomePageState extends State<HomePage> {
           title: 'Text Field',
           routeName: 'textfield',
           leading: const Icon(Icons.text_fields),
+          onTap: () {},
+        ),
+        SideBarItems(
+          title: 'Tabs',
+          routeName: 'tabs',
+          leading: const Icon(Icons.tab),
           onTap: () {},
         ),
       ],
@@ -89,6 +105,8 @@ class _HomePageState extends State<HomePage> {
         'grid': SampleGridPage(),
         'imageeditor': SampleImageEditorPage(),
         'textfield': SampleTextFieldPage(),
+        'code': SampleCodesPage(),
+        'tabs': SampleTabsPage(),
       },
     );
   }

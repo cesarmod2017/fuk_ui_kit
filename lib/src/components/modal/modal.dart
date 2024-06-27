@@ -74,7 +74,7 @@ class FukModal extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      color: headerColor ?? Theme.of(context).colorScheme.background,
+      color: headerColor ?? Theme.of(context).colorScheme.surface,
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

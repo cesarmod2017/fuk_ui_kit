@@ -242,8 +242,10 @@ class FukDataGridState extends State<FukDataGrid> {
                   color: isHovered
                       ? Theme.of(context).hoverColor
                       : isStriped
-                          ? Theme.of(context).colorScheme.surfaceVariant
-                          : Theme.of(context).colorScheme.background,
+                          ? Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest
+                          : Theme.of(context).colorScheme.surface,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
