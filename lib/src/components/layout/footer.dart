@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 
 class FukFooter extends StatelessWidget {
-  final String text;
-
+  final Widget child;
+  final Color? backgroundColor;
+  final double? width;
   const FukFooter({
     super.key,
-    required this.text,
+    required this.child,
+    this.backgroundColor,
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      width: width ?? double.infinity,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color:
+            backgroundColor ?? Theme.of(context).colorScheme.surfaceContainer,
       ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 12.0,
-        ),
-      ),
+      child: child,
     );
   }
 }

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FukPage extends StatelessWidget {
-  final Widget header;
+  final Widget? header;
   final Widget content;
-  final Widget footer;
+  final Widget? footer;
   final Widget? aside;
 
   const FukPage({
     super.key,
-    required this.header,
+    this.header,
     required this.content,
-    required this.footer,
+    this.footer,
     this.aside,
   });
 
@@ -19,7 +19,7 @@ class FukPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        header,
+        if (header != null) header!,
         Expanded(
           child: Row(
             children: [
@@ -34,7 +34,7 @@ class FukPage extends StatelessWidget {
             ],
           ),
         ),
-        footer,
+        if (footer != null) footer!,
       ],
     );
   }

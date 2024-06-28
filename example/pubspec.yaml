@@ -14,6 +14,7 @@ dependencies:
   http: ^1.2.1
   re_editor: ^0.3.0
   dart_style: ^2.3.6
+  get: ^4.6.6
   fuk_ui_kit:
     path: ../
 

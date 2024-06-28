@@ -5,12 +5,14 @@ class FukHeader extends StatelessWidget {
   final Widget? leading;
   final List<Widget>? actions;
   final Widget? bottom;
+  final Color? backgroundColor;
   const FukHeader({
     super.key,
     required this.title,
     this.leading,
     this.actions,
     this.bottom,
+    this.backgroundColor,
   });
 
   @override
@@ -18,7 +20,7 @@ class FukHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: backgroundColor ?? Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).shadowColor.withOpacity(0.12),

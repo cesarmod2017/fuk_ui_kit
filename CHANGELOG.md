@@ -1,3 +1,23 @@
+## 0.0.11
+
+- TODO: FukTextField
+
+## 0.0.10
+
+- TODO: Features FukFooter
+
+## 0.0.9
+
+- TODO: Features FukFooter
+
+## 0.0.8
+
+- TODO: Background colors
+
+## 0.0.7
+
+- TODO: Include Getx routes
+
 ## 0.0.6
 
 - TODO: Creation of the FukTabs

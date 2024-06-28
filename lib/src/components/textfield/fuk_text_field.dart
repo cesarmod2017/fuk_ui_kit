@@ -11,6 +11,9 @@ class FukTextField extends StatefulWidget {
   final bool validate;
   final bool isPassword;
   final bool isObscure;
+  final TextInputType? keyboardType;
+  final int? minLines;
+  final int? maxLines;
 
   const FukTextField({
     super.key,
@@ -24,6 +27,9 @@ class FukTextField extends StatefulWidget {
     this.validate = true,
     this.isPassword = false,
     this.isObscure = true,
+    this.keyboardType,
+    this.minLines,
+    this.maxLines,
   });
 
   @override
@@ -67,9 +73,13 @@ class FukTextFieldState extends State<FukTextField> {
           const SizedBox(height: 8),
         ],
         TextFormField(
+          maxLines: widget.maxLines, // Limita o TextFormField a 5 linhas
+          minLines: widget.minLines,
+          keyboardType: widget.keyboardType ?? TextInputType.text,
           controller: _controller,
           validator: widget.validate ? _validateField : null,
           obscureText: _obscureText,
+
           decoration: widget.decoration?.copyWith(
                 suffixIcon: widget.isPassword
                     ? IconButton(

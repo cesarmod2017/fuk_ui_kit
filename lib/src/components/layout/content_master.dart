@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
+import 'package:get/get_navigation/src/routes/get_route.dart';
 
 class FukContentMaster extends StatefulWidget {
   final List<SideBarItems> topItems;
   final List<SideBarItems> bottomItems;
-  final Map<String, Widget> routes;
+  final Map<String, Widget>? routes;
+  final Map<String, GetPage>? routesGetx;
   final String? iconImage;
   final Icon? icon;
 
@@ -12,7 +14,8 @@ class FukContentMaster extends StatefulWidget {
     super.key,
     required this.topItems,
     required this.bottomItems,
-    required this.routes,
+    this.routes,
+    this.routesGetx,
     this.iconImage,
     this.icon,
   });
@@ -28,8 +31,11 @@ class FukContentMasterState extends State<FukContentMaster> {
   void initState() {
     super.initState();
     // Set default route if available
-    if (widget.routes.isNotEmpty) {
-      _selectedPage = widget.routes.keys.first;
+    if (widget.routes != null && widget.routes!.isNotEmpty) {
+      _selectedPage = widget.routes!.keys.first;
+    }
+    if (widget.routesGetx != null && widget.routesGetx!.isNotEmpty) {
+      _selectedPage = widget.routesGetx!.keys.first;
     }
   }
 
@@ -80,15 +86,6 @@ class FukContentMasterState extends State<FukContentMaster> {
                   }
                 },
                 onTap: listItem.onTap,
-                // onTap: () {
-                //   if (listItem.onTap != null) listItem.onTap!();
-                //   if (listItem.children != null ||
-                //       listItem.children!.isNotEmpty) {
-                //     handleTap(listItem);
-                //   } else {
-                //     _selectPage(listItem.routeName);
-                //   }
-                // },
               );
             }).toList(),
             bottomItems: widget.bottomItems.map((item) {
@@ -106,10 +103,6 @@ class FukContentMasterState extends State<FukContentMaster> {
                   }
                 },
                 onTap: listItem.onTap,
-                // onTap: () {
-                //   _selectPage(listItem.routeName);
-                //   if (listItem.onTap != null) listItem.onTap!();
-                // },
               );
             }).toList(),
           ),
@@ -122,7 +115,20 @@ class FukContentMasterState extends State<FukContentMaster> {
   }
 
   Widget _buildPageContent() {
-    final pageContent = widget.routes[_selectedPage];
-    return pageContent ?? const Center(child: Text('Page not found'));
+    // Attempt to get the page from routes if it's not null and contains the selected page.
+    final pageFromRoutes = widget.routes?[_selectedPage];
+    if (pageFromRoutes != null) return pageFromRoutes;
+
+    // Attempt to get the page from routesGetx if it's not null and contains the selected page.
+    final pageFromRoutesGetx = widget.routesGetx?[_selectedPage]?.page();
+    if (pageFromRoutesGetx != null) {
+      widget.routesGetx?[_selectedPage]?.bindings.forEach((binding) {
+        binding.dependencies();
+      });
+      return pageFromRoutesGetx;
+    }
+
+    // Return a default 'Page not found' widget if neither routes nor routesGetx have the selected page.
+    return const Center(child: Text('Page not found'));
   }
 }

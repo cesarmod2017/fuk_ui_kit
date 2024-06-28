@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class FukAside extends StatelessWidget {
   final Widget child;
-
+  final Color? backgroundColor;
   const FukAside({
     super.key,
     required this.child,
+    this.backgroundColor,
   });
 
   @override
@@ -14,7 +15,8 @@ class FukAside extends StatelessWidget {
       width: 250.0,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color:
+            backgroundColor ?? Theme.of(context).colorScheme.surfaceContainer,
         boxShadow: const [
           BoxShadow(
             color: Colors.black12,
