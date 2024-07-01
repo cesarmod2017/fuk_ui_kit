@@ -14,6 +14,12 @@ class FukTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final int? minLines;
   final int? maxLines;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onFieldSubmitted;
+  final VoidCallback? onEditingComplete;
+  final VoidCallback? onTap;
+  final FormFieldSetter<String>? onSaved;
+  final TapRegionCallback? onTapOutside;
 
   const FukTextField({
     super.key,
@@ -30,6 +36,12 @@ class FukTextField extends StatefulWidget {
     this.keyboardType,
     this.minLines,
     this.maxLines,
+    this.onChanged,
+    this.onFieldSubmitted,
+    this.onEditingComplete,
+    this.onTap,
+    this.onSaved,
+    this.onTapOutside,
   });
 
   @override
@@ -73,13 +85,22 @@ class FukTextFieldState extends State<FukTextField> {
           const SizedBox(height: 8),
         ],
         TextFormField(
-          maxLines: widget.maxLines, // Limita o TextFormField a 5 linhas
+          controller: _controller,
+          maxLines: widget.maxLines,
           minLines: widget.minLines,
           keyboardType: widget.keyboardType ?? TextInputType.text,
-          controller: _controller,
           validator: widget.validate ? _validateField : null,
           obscureText: _obscureText,
-
+          onChanged: widget.onChanged,
+          onTapOutside: widget.onTapOutside,
+          onFieldSubmitted: widget.onFieldSubmitted,
+          onEditingComplete: widget.keyboardType == TextInputType.multiline
+              ? () {
+                  widget.onFieldSubmitted?.call(_controller.text);
+                }
+              : widget.onEditingComplete,
+          onTap: widget.onTap,
+          onSaved: widget.onSaved,
           decoration: widget.decoration?.copyWith(
                 suffixIcon: widget.isPassword
                     ? IconButton(

@@ -2,7 +2,7 @@ name: fuk_ui_kit
 description: A Flutter UI Kit for desktop and web applications.
 homepage: https://github.com/cesarmod2017/fuk_ui_kit
 repository: https://github.com/cesarmod2017/fuk_ui_kit
-version: 0.0.11
+version: 0.0.14
 
 environment:
   sdk: ">=3.3.4 <4.0.0"

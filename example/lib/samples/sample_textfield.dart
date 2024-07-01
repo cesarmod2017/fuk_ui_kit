@@ -120,7 +120,7 @@ class _SampleTextFieldPageState extends State<SampleTextFieldPage> {
           ),
         ),
       ),
-      footer: const FukFooter(text: 'Footer Content Dashboard'),
+      footer: const FukFooter(child: Text('Footer Content')),
     );
   }
 }

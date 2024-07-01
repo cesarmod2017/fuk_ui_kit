@@ -345,7 +345,7 @@ class _SampleGridPageState extends State<SampleGridPage> {
           showColumnBorders: true,
         ),
       ),
-      footer: const FukFooter(text: 'Footer Content'),
+      footer: const FukFooter(child: Text('Footer Content')),
       // aside: Container(
       //   color: Colors.grey[800],
       //   child: const Center(
@@ -392,7 +392,7 @@ class _SampleImageEditorPageState extends State<SampleImageEditorPage> {
       content: const FukContent(
         child: FukImageEditor(),
       ),
-      footer: const FukFooter(text: 'Footer Content'),
+      footer: const FukFooter(child: Text('Footer Content')),
       // aside: Container(
       //   color: Colors.grey[800],
       //   child: const Center(
@@ -621,7 +621,7 @@ class _SampleNotifyPageState extends State<SampleNotifyPage> {
           ),
         ),
       ),
-      footer: const FukFooter(text: 'Footer Content'),
+      footer: const FukFooter(child: Text('Footer Content')),
       aside: Container(
         color: Colors.grey[800],
         child: const Center(

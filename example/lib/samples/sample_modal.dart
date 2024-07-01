@@ -84,7 +84,7 @@ class _SampleModalPageState extends State<SampleModalPage> {
           ),
         ),
       ),
-      footer: const FukFooter(text: 'Footer Content Dashboard'),
+      footer: const FukFooter(child: Text('Footer Content')),
     );
   }
 }
