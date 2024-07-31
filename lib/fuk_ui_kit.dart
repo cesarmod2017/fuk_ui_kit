@@ -18,4 +18,5 @@ export 'src/components/notify/notify.dart';
 export 'src/components/tabs/tab_view.dart';
 export 'src/components/textfield/fuk_text_field.dart';
 export 'src/components/textfield/fuk_text_file.dart';
+export 'src/components/tree_view/fuk_tree_view.dart';
 export 'src/models/sidebar_items.dart';

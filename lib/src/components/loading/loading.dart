@@ -43,7 +43,7 @@ class FukLoading {
   }
 
   void hide() {
-    if (_currentOverlay != null && _currentOverlay!.mounted) {
+    if (_currentOverlay != null) {
       _currentOverlay?.remove();
       _currentOverlay = null;
     }
