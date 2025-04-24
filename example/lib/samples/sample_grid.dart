@@ -17,7 +17,11 @@ class _SampleGridPageState extends State<SampleGridPage> {
   final List<DataGridColumn> _columns = [
     DataGridColumn(title: 'ID', width: 50, sortable: false, field: 'id'),
     DataGridColumn(title: 'Name', width: 800, sortable: true, field: 'name'),
-    DataGridColumn(title: 'Age', width: 100, sortable: true, field: 'age'),
+    DataGridColumn(
+        title: 'Age pulicacao das ordens',
+        width: 100,
+        sortable: true,
+        field: 'age'),
     DataGridColumn(title: '#', width: 120, sortable: false, field: 'action'),
   ];
 

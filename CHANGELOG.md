@@ -1,4 +1,9 @@
+## 0.0.18
 
+- TODO: Fix FukTextFile
+## 0.0.17
+
+- TODO: New Padding parameter in FukContent and correction in FukGrid in columns
 ## 0.0.16
 
 - TODO: New component FukTreeView

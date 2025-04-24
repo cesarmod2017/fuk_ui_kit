@@ -1,5 +1,4 @@
 ### fuk_ui_kit.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\fuk_ui_kit.dart
 
 Descricao:
@@ -8,6 +7,7 @@ Descricao:
 library fuk_ui_kit;
 
 export 'src/components/buttons/button.dart';
+export 'src/components/dropdown/dropdown.dart';
 export 'src/components/grid/data_grid.dart';
 export 'src/components/image_editor/fuk_image_editor.dart';
 export 'src/components/label/label.dart';
@@ -21,12 +21,15 @@ export 'src/components/layout/sidebar.dart';
 export 'src/components/loading/loading.dart';
 export 'src/components/modal/modal.dart';
 export 'src/components/notify/notify.dart';
+export 'src/components/tabs/tab_view.dart';
+export 'src/components/textfield/fuk_text_field.dart';
+export 'src/components/textfield/fuk_text_file.dart';
+export 'src/components/tree_view/fuk_tree_view.dart';
 export 'src/models/sidebar_items.dart';
 
 ```
 
 ### sidebar_items.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\models\sidebar_items.dart
 
 Descricao:
@@ -70,7 +73,6 @@ class SideBarItems {
 ```
 
 ### button.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\buttons\button.dart
 
 Descricao:
@@ -172,8 +174,74 @@ class FukButton extends StatelessWidget {
 
 ```
 
-### data_grid.dart
+### dropdown.dart
+Path: D:\Projetos\fuk_ui_kit\lib\src\components\dropdown\dropdown.dart
 
+Descricao:
+
+```dart
+import 'package:flutter/material.dart';
+
+class FukDropdown<T> extends StatelessWidget {
+  final String? placeholder;
+  final String? label;
+  final List<T> data;
+  final T? selectedItem;
+  final ValueChanged<T?> onChanged;
+  final String Function(T)? displayItem;
+  final InputDecoration? decoration;
+  final bool isExpanded;
+
+  const FukDropdown({
+    super.key,
+    this.placeholder,
+    this.label,
+    required this.data,
+    this.selectedItem,
+    required this.onChanged,
+    this.displayItem,
+    this.decoration,
+    this.isExpanded = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (label != null) ...[
+          Text(
+            label!,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 8),
+        ],
+        DropdownButtonFormField<T>(
+          decoration: decoration?.copyWith(
+                hintText: placeholder,
+              ) ??
+              InputDecoration(
+                hintText: placeholder,
+              ),
+          value: selectedItem,
+          isExpanded: isExpanded,
+          items: data.map((T value) {
+            return DropdownMenuItem<T>(
+              value: value,
+              child: Text(
+                  displayItem != null ? displayItem!(value) : value.toString()),
+            );
+          }).toList(),
+          onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+}
+
+```
+
+### data_grid.dart
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\grid\data_grid.dart
 
 Descricao:
@@ -423,8 +491,10 @@ class FukDataGridState extends State<FukDataGrid> {
                   color: isHovered
                       ? Theme.of(context).hoverColor
                       : isStriped
-                          ? Theme.of(context).colorScheme.surfaceVariant
-                          : Theme.of(context).colorScheme.background,
+                          ? Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest
+                          : Theme.of(context).colorScheme.surface,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -520,7 +590,6 @@ class FukDataGridState extends State<FukDataGrid> {
 ```
 
 ### fuk_image_editor.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\image_editor\fuk_image_editor.dart
 
 Descricao:
@@ -556,7 +625,6 @@ class FukImageEditorState extends State<FukImageEditor> {
 ```
 
 ### label.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\label\label.dart
 
 Descricao:
@@ -604,7 +672,6 @@ class FukLabel extends StatelessWidget {
 ```
 
 ### aside.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\layout\aside.dart
 
 Descricao:
@@ -614,10 +681,11 @@ import 'package:flutter/material.dart';
 
 class FukAside extends StatelessWidget {
   final Widget child;
-
+  final Color? backgroundColor;
   const FukAside({
     super.key,
     required this.child,
+    this.backgroundColor,
   });
 
   @override
@@ -626,7 +694,8 @@ class FukAside extends StatelessWidget {
       width: 250.0,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color:
+            backgroundColor ?? Theme.of(context).colorScheme.surfaceContainer,
         boxShadow: const [
           BoxShadow(
             color: Colors.black12,
@@ -643,7 +712,6 @@ class FukAside extends StatelessWidget {
 ```
 
 ### content.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\layout\content.dart
 
 Descricao:
@@ -653,10 +721,12 @@ import 'package:flutter/material.dart';
 
 class FukContent extends StatelessWidget {
   final Widget child;
+  final Color? backgroundColor;
 
   const FukContent({
     super.key,
     required this.child,
+    this.backgroundColor,
   });
 
   @override
@@ -664,7 +734,8 @@ class FukContent extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondaryContainer,
+        color:
+            backgroundColor ?? Theme.of(context).colorScheme.surfaceContainer,
       ),
       child: child,
     );
@@ -674,7 +745,6 @@ class FukContent extends StatelessWidget {
 ```
 
 ### content_master.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\layout\content_master.dart
 
 Descricao:
@@ -682,11 +752,13 @@ Descricao:
 ```dart
 import 'package:flutter/material.dart';
 import 'package:fuk_ui_kit/fuk_ui_kit.dart';
+import 'package:get/get_navigation/src/routes/get_route.dart';
 
 class FukContentMaster extends StatefulWidget {
   final List<SideBarItems> topItems;
   final List<SideBarItems> bottomItems;
-  final Map<String, Widget> routes;
+  final Map<String, Widget>? routes;
+  final Map<String, GetPage>? routesGetx;
   final String? iconImage;
   final Icon? icon;
 
@@ -694,7 +766,8 @@ class FukContentMaster extends StatefulWidget {
     super.key,
     required this.topItems,
     required this.bottomItems,
-    required this.routes,
+    this.routes,
+    this.routesGetx,
     this.iconImage,
     this.icon,
   });
@@ -710,8 +783,11 @@ class FukContentMasterState extends State<FukContentMaster> {
   void initState() {
     super.initState();
     // Set default route if available
-    if (widget.routes.isNotEmpty) {
-      _selectedPage = widget.routes.keys.first;
+    if (widget.routes != null && widget.routes!.isNotEmpty) {
+      _selectedPage = widget.routes!.keys.first;
+    }
+    if (widget.routesGetx != null && widget.routesGetx!.isNotEmpty) {
+      _selectedPage = widget.routesGetx!.keys.first;
     }
   }
 
@@ -762,15 +838,6 @@ class FukContentMasterState extends State<FukContentMaster> {
                   }
                 },
                 onTap: listItem.onTap,
-                // onTap: () {
-                //   if (listItem.onTap != null) listItem.onTap!();
-                //   if (listItem.children != null ||
-                //       listItem.children!.isNotEmpty) {
-                //     handleTap(listItem);
-                //   } else {
-                //     _selectPage(listItem.routeName);
-                //   }
-                // },
               );
             }).toList(),
             bottomItems: widget.bottomItems.map((item) {
@@ -788,10 +855,6 @@ class FukContentMasterState extends State<FukContentMaster> {
                   }
                 },
                 onTap: listItem.onTap,
-                // onTap: () {
-                //   _selectPage(listItem.routeName);
-                //   if (listItem.onTap != null) listItem.onTap!();
-                // },
               );
             }).toList(),
           ),
@@ -804,15 +867,27 @@ class FukContentMasterState extends State<FukContentMaster> {
   }
 
   Widget _buildPageContent() {
-    final pageContent = widget.routes[_selectedPage];
-    return pageContent ?? const Center(child: Text('Page not found'));
+    // Attempt to get the page from routes if it's not null and contains the selected page.
+    final pageFromRoutes = widget.routes?[_selectedPage];
+    if (pageFromRoutes != null) return pageFromRoutes;
+
+    // Attempt to get the page from routesGetx if it's not null and contains the selected page.
+    final pageFromRoutesGetx = widget.routesGetx?[_selectedPage]?.page();
+    if (pageFromRoutesGetx != null) {
+      widget.routesGetx?[_selectedPage]?.bindings.forEach((binding) {
+        binding.dependencies();
+      });
+      return pageFromRoutesGetx;
+    }
+
+    // Return a default 'Page not found' widget if neither routes nor routesGetx have the selected page.
+    return const Center(child: Text('Page not found'));
   }
 }
 
 ```
 
 ### footer.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\layout\footer.dart
 
 Descricao:
@@ -821,27 +896,26 @@ Descricao:
 import 'package:flutter/material.dart';
 
 class FukFooter extends StatelessWidget {
-  final String text;
-
+  final Widget child;
+  final Color? backgroundColor;
+  final double? width;
   const FukFooter({
     super.key,
-    required this.text,
+    required this.child,
+    this.backgroundColor,
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      width: width ?? double.infinity,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color:
+            backgroundColor ?? Theme.of(context).colorScheme.surfaceContainer,
       ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 12.0,
-        ),
-      ),
+      child: child,
     );
   }
 }
@@ -849,7 +923,6 @@ class FukFooter extends StatelessWidget {
 ```
 
 ### header.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\layout\header.dart
 
 Descricao:
@@ -861,12 +934,15 @@ class FukHeader extends StatelessWidget {
   final String title;
   final Widget? leading;
   final List<Widget>? actions;
-
+  final Widget? bottom;
+  final Color? backgroundColor;
   const FukHeader({
     super.key,
     required this.title,
     this.leading,
     this.actions,
+    this.bottom,
+    this.backgroundColor,
   });
 
   @override
@@ -874,7 +950,7 @@ class FukHeader extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: backgroundColor ?? Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).shadowColor.withOpacity(0.12),
@@ -883,20 +959,28 @@ class FukHeader extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          if (leading != null) leading!,
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+          Row(
+            children: [
+              if (leading != null) leading!,
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-            ),
+              if (actions != null) ...actions!,
+            ],
           ),
-          if (actions != null) ...actions!,
+          bottom ?? const SizedBox.shrink(),
         ],
       ),
     );
@@ -906,7 +990,6 @@ class FukHeader extends StatelessWidget {
 ```
 
 ### page.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\layout\page.dart
 
 Descricao:
@@ -916,16 +999,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class FukPage extends StatelessWidget {
-  final Widget header;
+  final Widget? header;
   final Widget content;
-  final Widget footer;
+  final Widget? footer;
   final Widget? aside;
 
   const FukPage({
     super.key,
-    required this.header,
+    this.header,
     required this.content,
-    required this.footer,
+    this.footer,
     this.aside,
   });
 
@@ -933,7 +1016,7 @@ class FukPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        header,
+        if (header != null) header!,
         Expanded(
           child: Row(
             children: [
@@ -948,7 +1031,7 @@ class FukPage extends StatelessWidget {
             ],
           ),
         ),
-        footer,
+        if (footer != null) footer!,
       ],
     );
   }
@@ -957,7 +1040,6 @@ class FukPage extends StatelessWidget {
 ```
 
 ### sidebar.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\layout\sidebar.dart
 
 Descricao:
@@ -970,6 +1052,7 @@ class FukSidebar extends StatefulWidget {
   final List<SideBarItems> items;
   final List<SideBarItems>? bottomItems;
   final String? iconImage;
+  final Color? backgroundColor;
   final Icon? icon;
 
   const FukSidebar({
@@ -978,6 +1061,7 @@ class FukSidebar extends StatefulWidget {
     this.bottomItems,
     this.iconImage,
     this.icon,
+    this.backgroundColor,
   });
 
   @override
@@ -994,7 +1078,7 @@ class FukSidebarState extends State<FukSidebar> {
       height: MediaQuery.of(context).size.height,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: widget.backgroundColor ?? Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
             color: Theme.of(context).shadowColor.withOpacity(0.12),
@@ -1107,7 +1191,6 @@ class FukSidebarState extends State<FukSidebar> {
 ```
 
 ### loading.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\loading\loading.dart
 
 Descricao:
@@ -1158,7 +1241,7 @@ class FukLoading {
   }
 
   void hide() {
-    if (_currentOverlay != null && _currentOverlay!.mounted) {
+    if (_currentOverlay != null) {
       _currentOverlay?.remove();
       _currentOverlay = null;
     }
@@ -1256,7 +1339,7 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20.0),
           boxShadow: const [
             BoxShadow(
@@ -1282,7 +1365,7 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
                     Text(
                       widget.title!,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                     ),
                   ],
@@ -1301,7 +1384,7 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
                     Text(
                       widget.title!,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                     ),
                   ],
@@ -1315,7 +1398,7 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(8.0),
         boxShadow: const [
           BoxShadow(
@@ -1331,7 +1414,7 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
           Text(
             widget.delayMessage,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
           ),
           const SizedBox(height: 16),
@@ -1367,7 +1450,6 @@ class __FukLoadingWidgetState extends State<_FukLoadingWidget> {
 ```
 
 ### modal.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\modal\modal.dart
 
 Descricao:
@@ -1449,7 +1531,7 @@ class FukModal extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     return Container(
-      color: headerColor ?? Theme.of(context).colorScheme.background,
+      color: headerColor ?? Theme.of(context).colorScheme.surface,
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1504,7 +1586,6 @@ class FukModal extends StatelessWidget {
 ```
 
 ### notify.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\notify\notify.dart
 
 Descricao:
@@ -1639,9 +1720,8 @@ class _FukNotifyWidget extends StatelessWidget {
                                   .textTheme
                                   .titleSmall
                                   ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                               textAlign: message == null
                                   ? TextAlign.center
@@ -1653,7 +1733,7 @@ class _FukNotifyWidget extends StatelessWidget {
                               Icons.close,
                               size: 16,
                             ),
-                            color: Theme.of(context).colorScheme.onBackground,
+                            color: Theme.of(context).colorScheme.onSurface,
                             onPressed: onDismiss,
                           ),
                         ],
@@ -1666,8 +1746,7 @@ class _FukNotifyWidget extends StatelessWidget {
                               .textTheme
                               .bodyMedium
                               ?.copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                         ),
                       ],
@@ -1685,8 +1764,770 @@ class _FukNotifyWidget extends StatelessWidget {
 
 ```
 
-### canvas_area.dart
+### tab_view.dart
+Path: D:\Projetos\fuk_ui_kit\lib\src\components\tabs\tab_view.dart
 
+Descricao:
+
+```dart
+import 'package:flutter/material.dart';
+
+class FukTabView extends StatelessWidget {
+  final String? title;
+  final Widget? child;
+  final ValueSetter<int>? onClose;
+  final VoidCallback? onNewTab;
+  final int index;
+
+  const FukTabView({
+    super.key,
+    required this.index,
+    this.title,
+    this.child,
+    this.onClose,
+    this.onNewTab,
+  });
+
+  Tab get tab => Tab(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            title != null
+                ? Flexible(
+                    child: Text(title!,
+                        style: const TextStyle(
+                          fontSize: 12,
+                        )),
+                  )
+                : const SizedBox.shrink(),
+            IconButton(
+              icon: Icon(
+                onClose != null ? Icons.close : Icons.add,
+                size: onClose != null ? 12 : 18,
+                color: onClose != null ? Colors.red : Colors.blue,
+              ),
+              onPressed: () {
+                if (onClose != null) {
+                  onClose!(index);
+                } else {
+                  onNewTab!();
+                }
+              },
+            ),
+          ],
+        ),
+      );
+
+  Widget get view => child ?? const SizedBox.shrink();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox.shrink();
+  }
+}
+
+```
+
+### fuk_text_field.dart
+Path: D:\Projetos\fuk_ui_kit\lib\src\components\textfield\fuk_text_field.dart
+
+Descricao:
+
+```dart
+import 'package:flutter/material.dart';
+
+class FukTextField extends StatefulWidget {
+  final String? label;
+  final String? placeholder;
+  final bool isRequired;
+  final TextEditingController? controller;
+  final InputDecoration? decoration;
+  final Icon? icon;
+  final VoidCallback? onIconPressed;
+  final bool validate;
+  final bool isPassword;
+  final bool isObscure;
+  final TextInputType? keyboardType;
+  final int? minLines;
+  final int? maxLines;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onFieldSubmitted;
+  final VoidCallback? onEditingComplete;
+  final VoidCallback? onTap;
+  final FormFieldSetter<String>? onSaved;
+  final TapRegionCallback? onTapOutside;
+
+  const FukTextField({
+    super.key,
+    this.label,
+    this.placeholder,
+    this.isRequired = false,
+    this.controller,
+    this.decoration,
+    this.icon,
+    this.onIconPressed,
+    this.validate = true,
+    this.isPassword = false,
+    this.isObscure = true,
+    this.keyboardType,
+    this.minLines,
+    this.maxLines,
+    this.onChanged,
+    this.onFieldSubmitted,
+    this.onEditingComplete,
+    this.onTap,
+    this.onSaved,
+    this.onTapOutside,
+  });
+
+  @override
+  FukTextFieldState createState() => FukTextFieldState();
+}
+
+class FukTextFieldState extends State<FukTextField> {
+  late TextEditingController _controller;
+  late bool _obscureText;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? TextEditingController();
+    _obscureText = widget.isPassword ? widget.isObscure : false;
+  }
+
+  void _toggleObscureText() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
+  String? _validateField(String? value) {
+    if (widget.isRequired && (value == null || value.isEmpty)) {
+      return 'This field is required';
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.label != null) ...[
+          Text(
+            widget.label!,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 8),
+        ],
+        TextFormField(
+          controller: _controller,
+          maxLines: widget.maxLines,
+          minLines: widget.minLines,
+          keyboardType: widget.keyboardType ?? TextInputType.text,
+          validator: widget.validate ? _validateField : null,
+          obscureText: _obscureText,
+          onChanged: widget.onChanged,
+          onTapOutside: widget.onTapOutside,
+          onFieldSubmitted: widget.onFieldSubmitted,
+          onEditingComplete: widget.keyboardType == TextInputType.multiline
+              ? () {
+                  widget.onFieldSubmitted?.call(_controller.text);
+                }
+              : widget.onEditingComplete,
+          onTap: widget.onTap,
+          onSaved: widget.onSaved,
+          decoration: widget.decoration?.copyWith(
+                suffixIcon: widget.isPassword
+                    ? IconButton(
+                        icon: Icon(
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: _toggleObscureText,
+                      )
+                    : widget.icon != null
+                        ? IconButton(
+                            icon: widget.icon!,
+                            onPressed: widget.onIconPressed,
+                          )
+                        : null,
+                hintText: widget.placeholder,
+              ) ??
+              InputDecoration(
+                suffixIcon: widget.isPassword
+                    ? IconButton(
+                        icon: Icon(
+                          _obscureText
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: _toggleObscureText,
+                      )
+                    : widget.icon != null
+                        ? IconButton(
+                            icon: widget.icon!,
+                            onPressed: widget.onIconPressed,
+                          )
+                        : null,
+                hintText: widget.placeholder,
+              ),
+        ),
+      ],
+    );
+  }
+}
+
+```
+
+### fuk_text_file.dart
+Path: D:\Projetos\fuk_ui_kit\lib\src\components\textfield\fuk_text_file.dart
+
+Descricao:
+
+```dart
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+
+enum AllowedFileType {
+  all,
+  imagePng,
+  imageJpg,
+  imageJpeg,
+  documentPdf,
+  documentDoc,
+  documentDocx,
+  documentXls,
+  documentXlsx,
+  folder,
+}
+
+class FukTextFile extends StatefulWidget {
+  final bool isRequired;
+  final List<AllowedFileType> allowedFileTypes;
+  final TextEditingController? controller;
+  final Icon? icon;
+  final bool validate;
+  final String? label;
+  final InputDecoration? decoration;
+
+  const FukTextFile({
+    super.key,
+    this.isRequired = false,
+    this.allowedFileTypes = const [AllowedFileType.all],
+    this.controller,
+    this.icon,
+    this.validate = true,
+    this.label,
+    this.decoration,
+  });
+
+  @override
+  FukTextFileState createState() => FukTextFileState();
+}
+
+class FukTextFileState extends State<FukTextFile> {
+  late TextEditingController _controller;
+  String? _filePath;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? TextEditingController();
+  }
+
+  Future<void> _pickFile() async {
+    FileType fileType = _mapAllowedFileType(widget.allowedFileTypes);
+
+    if (widget.allowedFileTypes.contains(AllowedFileType.folder)) {
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+      if (selectedDirectory != null) {
+        setState(() {
+          _filePath = selectedDirectory;
+          _controller.text = _filePath!;
+        });
+      }
+    } else {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: fileType,
+        allowedExtensions: _getAllowedExtensions(widget.allowedFileTypes),
+      );
+
+      if (result != null) {
+        setState(() {
+          _filePath = result.files.single.path;
+          _controller.text = _filePath!;
+        });
+      }
+    }
+  }
+
+  FileType _mapAllowedFileType(List<AllowedFileType> types) {
+    if (types.contains(AllowedFileType.folder)) {
+      return FileType.any; // Handle folder separately
+    } else if (types.length == 1) {
+      switch (types.first) {
+        case AllowedFileType.all:
+          return FileType.any;
+        case AllowedFileType.imagePng:
+        case AllowedFileType.imageJpg:
+        case AllowedFileType.imageJpeg:
+          return FileType.image;
+        case AllowedFileType.documentPdf:
+        case AllowedFileType.documentDoc:
+        case AllowedFileType.documentDocx:
+        case AllowedFileType.documentXls:
+        case AllowedFileType.documentXlsx:
+          return FileType.custom;
+        default:
+          return FileType.any;
+      }
+    } else {
+      return FileType.custom;
+    }
+  }
+
+  List<String>? _getAllowedExtensions(List<AllowedFileType> types) {
+    if (types.contains(AllowedFileType.folder)) {
+      return null; // No extensions needed for folder selection
+    } else if (types.isNotEmpty) {
+      return types
+          .map((type) {
+            switch (type) {
+              case AllowedFileType.imagePng:
+                return 'png';
+              case AllowedFileType.imageJpg:
+                return 'jpg';
+              case AllowedFileType.imageJpeg:
+                return 'jpeg';
+              case AllowedFileType.documentPdf:
+                return 'pdf';
+              case AllowedFileType.documentDoc:
+                return 'doc';
+              case AllowedFileType.documentDocx:
+                return 'docx';
+              case AllowedFileType.documentXls:
+                return 'xls';
+              case AllowedFileType.documentXlsx:
+                return 'xlsx';
+              default:
+                return null;
+            }
+          })
+          .where((ext) => ext != null)
+          .cast<String>()
+          .toList();
+    }
+    return null;
+  }
+
+  String? _validateFile(String? value) {
+    if (widget.isRequired && (value == null || value.isEmpty)) {
+      return 'This field is required';
+    }
+    return null;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (widget.label != null) ...[
+          Text(
+            widget.label!,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 8),
+        ],
+        TextFormField(
+          controller: _controller,
+          validator: widget.validate ? _validateFile : null,
+          decoration: widget.decoration?.copyWith(
+                suffixIcon: IconButton(
+                  icon: widget.icon ?? const Icon(Icons.attach_file),
+                  onPressed: _pickFile,
+                ),
+                hintText: 'Select a file',
+              ) ??
+              InputDecoration(
+                suffixIcon: IconButton(
+                  icon: widget.icon ?? const Icon(Icons.attach_file),
+                  onPressed: _pickFile,
+                ),
+                hintText: 'Select a file',
+              ),
+        ),
+      ],
+    );
+  }
+}
+
+```
+
+### fuk_tree_view.dart
+Path: D:\Projetos\fuk_ui_kit\lib\src\components\tree_view\fuk_tree_view.dart
+
+Descricao:
+
+```dart
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
+
+class FukTreeViewItem {
+  final String id;
+  final String title;
+  final bool isFolder;
+  final bool isReadOnly;
+  List<FukTreeViewItem> children;
+  final Icon? icon;
+
+  FukTreeViewItem({
+    String? id,
+    required this.title,
+    this.isFolder = false,
+    this.isReadOnly = false,
+    this.children = const [],
+    this.icon,
+  }) : id = id ?? const Uuid().v4();
+
+  FukTreeViewItem copyWith({
+    String? id,
+    String? title,
+    bool? isFolder,
+    bool? isReadOnly,
+    List<FukTreeViewItem>? children,
+    Icon? icon,
+  }) {
+    return FukTreeViewItem(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      isFolder: isFolder ?? this.isFolder,
+      isReadOnly: isReadOnly ?? this.isReadOnly,
+      children: children ?? this.children,
+      icon: icon ?? this.icon,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'isFolder': isFolder,
+      'isReadOnly': isReadOnly,
+      'children': children.map((child) => child.toJson()).toList(),
+      'icon': icon?.icon?.codePoint,
+    };
+  }
+
+  static FukTreeViewItem fromJson(Map<String, dynamic> json) {
+    return FukTreeViewItem(
+      id: json['id'],
+      title: json['title'],
+      isFolder: json['isFolder'],
+      isReadOnly: json['isReadOnly'],
+      children: (json['children'] as List)
+          .map((childJson) => FukTreeViewItem.fromJson(childJson))
+          .toList(),
+      icon: json['icon'] != null
+          ? Icon(IconData(json['icon'], fontFamily: 'MaterialIcons'))
+          : null,
+    );
+  }
+}
+
+class FukTreeViewController {
+  List<FukTreeViewItem> items = [];
+
+  void loadFromJson(String json) {
+    final List<dynamic> jsonData = jsonDecode(json);
+    items =
+        jsonData.map((itemJson) => FukTreeViewItem.fromJson(itemJson)).toList();
+  }
+
+  String generateJson() {
+    return jsonEncode(items.map((item) => item.toJson()).toList());
+  }
+}
+
+class FukTreeView extends StatefulWidget {
+  final List<FukTreeViewItem> items;
+  final bool showCheckbox;
+  final Function(List<FukTreeViewItem>)? onSelectionChanged;
+  final bool initiallyExpanded;
+  final List<FukTreeViewOption> options;
+  final FukTreeViewController? controller;
+  final bool sortAlphabetically;
+
+  const FukTreeView({
+    super.key,
+    required this.items,
+    this.showCheckbox = false,
+    this.onSelectionChanged,
+    this.initiallyExpanded = false,
+    this.options = const [],
+    this.controller,
+    this.sortAlphabetically = false,
+  });
+
+  @override
+  FukTreeViewState createState() => FukTreeViewState();
+}
+
+class FukTreeViewState extends State<FukTreeView> {
+  final List<FukTreeViewItem> _selectedItems = [];
+  final Map<FukTreeViewItem, bool> _expandedItems = {};
+  FukTreeViewItem? _highlightedItem;
+  FukTreeViewItem? _draggedItem;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initiallyExpanded) {
+      _expandAllItems(widget.items);
+    }
+    widget.controller?.items = widget.items;
+    if (widget.sortAlphabetically) {
+      _sortItems(widget.items);
+    }
+  }
+
+  void _expandAllItems(List<FukTreeViewItem> items) {
+    for (var item in items) {
+      _expandedItems[item] = true;
+      if (item.children.isNotEmpty) {
+        _expandAllItems(item.children);
+      }
+    }
+  }
+
+  void _onItemChanged(FukTreeViewItem item, bool? selected) {
+    setState(() {
+      if (selected == true) {
+        _selectItem(item);
+      } else {
+        _deselectItem(item);
+      }
+    });
+
+    if (widget.onSelectionChanged != null) {
+      widget.onSelectionChanged!(_selectedItems);
+    }
+  }
+
+  void _selectItem(FukTreeViewItem item) {
+    if (!_selectedItems.contains(item)) {
+      _selectedItems.add(item);
+    }
+    for (var child in item.children) {
+      _selectItem(child);
+    }
+  }
+
+  void _deselectItem(FukTreeViewItem item) {
+    _selectedItems.remove(item);
+    for (var child in item.children) {
+      _deselectItem(child);
+    }
+  }
+
+  void _showContextMenu(
+      BuildContext context, Offset position, FukTreeViewItem item) {
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+    showMenu(
+      context: context,
+      position: RelativeRect.fromRect(
+        position & const Size(40, 40),
+        Offset.zero & overlay.size,
+      ),
+      items: widget.options
+          .map((option) => PopupMenuItem(
+                child: ListTile(
+                  leading: Icon(
+                    option.icon,
+                  ),
+                  title: Text(option.title),
+                  onTap: () {
+                    Navigator.pop(context);
+                    option.onTap(item);
+                  },
+                ),
+              ))
+          .toList(),
+    );
+  }
+
+  void _onDragStart(FukTreeViewItem item) {
+    setState(() {
+      _draggedItem = item;
+    });
+  }
+
+  void _onDragEnd(FukTreeViewItem item) {
+    if (_draggedItem != null && _draggedItem != item && item.isFolder) {
+      setState(() {
+        item.children.add(_draggedItem!);
+        _removeItem(_draggedItem!, widget.items);
+        _draggedItem = null;
+        if (widget.sortAlphabetically) {
+          _sortItems(widget.items);
+        }
+      });
+    } else {
+      setState(() {
+        _draggedItem = null;
+      });
+    }
+  }
+
+  void _removeItem(FukTreeViewItem item, List<FukTreeViewItem> items) {
+    for (var i = 0; i < items.length; i++) {
+      if (items[i] == item) {
+        items.removeAt(i);
+        return;
+      } else if (items[i].children.isNotEmpty) {
+        _removeItem(item, items[i].children);
+      }
+    }
+  }
+
+  void _handleDragAccept(FukTreeViewItem item) {
+    if (_draggedItem != null && _draggedItem != item && item.isFolder) {
+      setState(() {
+        _removeItem(_draggedItem!, widget.items);
+        item.children.add(_draggedItem!);
+        _draggedItem = null;
+        if (widget.sortAlphabetically) {
+          _sortItems(widget.items);
+        }
+      });
+    }
+  }
+
+  void _sortItems(List<FukTreeViewItem> items) {
+    items.sort((a, b) => a.title.compareTo(b.title));
+    for (var item in items) {
+      if (item.children.isNotEmpty) {
+        _sortItems(item.children);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: widget.items.map((item) => _buildTreeViewItem(item)).toList(),
+    );
+  }
+
+  Widget _buildTreeViewItem(FukTreeViewItem item, {int level = 0}) {
+    bool isExpanded = _expandedItems[item] ?? false;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 16.0 * level),
+          child: Row(
+            children: [
+              if (widget.showCheckbox)
+                Checkbox(
+                  value: _selectedItems.contains(item),
+                  onChanged: item.isReadOnly
+                      ? null
+                      : (selected) => _onItemChanged(item, selected),
+                ),
+              GestureDetector(
+                onSecondaryTapDown: (details) {
+                  _showContextMenu(context, details.globalPosition, item);
+                },
+                onTap: () {
+                  if (item.isFolder) {
+                    setState(() {
+                      _expandedItems[item] = !isExpanded;
+                    });
+                  }
+                  setState(() {
+                    _highlightedItem = item;
+                  });
+                },
+                child: Draggable<FukTreeViewItem>(
+                  data: item,
+                  onDragStarted: () => _onDragStart(item),
+                  onDraggableCanceled: (_, __) => _onDragEnd(item),
+                  feedback: Material(
+                    child: _buildTreeItemContent(item, level),
+                  ),
+                  child: DragTarget<FukTreeViewItem>(
+                    onAcceptWithDetails: (receivedItem) =>
+                        _handleDragAccept(item),
+                    builder: (context, candidateData, rejectedData) {
+                      return _buildTreeItemContent(item, level);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (isExpanded)
+          Column(
+            children: item.children
+                .map((child) => _buildTreeViewItem(child, level: level + 1))
+                .toList(),
+          ),
+      ],
+    );
+  }
+
+  Widget _buildTreeItemContent(FukTreeViewItem item, int level) {
+    return Row(
+      children: [
+        Icon(
+          item.isFolder
+              ? (_expandedItems[item] == true
+                  ? Icons.folder_open
+                  : Icons.folder)
+              : (item.icon?.icon ?? Icons.insert_drive_file),
+          color: item.icon?.color ?? Colors.white,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          item.title,
+          style: TextStyle(
+            color: item == _highlightedItem
+                ? Theme.of(context).colorScheme.primary
+                : item.isReadOnly
+                    ? Colors.grey
+                    : Theme.of(context).textTheme.bodyLarge?.color,
+            fontWeight:
+                item == _highlightedItem ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class FukTreeViewOption {
+  final String title;
+  final IconData icon;
+  final void Function(FukTreeViewItem) onTap;
+
+  FukTreeViewOption({
+    required this.title,
+    required this.icon,
+    required this.onTap,
+  });
+}
+
+```
+
+### canvas_area.dart
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\image_editor\components\canvas_area.dart
 
 Descricao:
@@ -1806,7 +2647,6 @@ class CanvasAreaState extends State<CanvasArea> {
 ```
 
 ### context_menu.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\image_editor\components\context_menu.dart
 
 Descricao:
@@ -1857,7 +2697,6 @@ class ContextMenu extends StatelessWidget {
 ```
 
 ### image_layer.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\image_editor\components\image_layer.dart
 
 Descricao:
@@ -1888,7 +2727,6 @@ class ImageLayer extends StatelessWidget {
 ```
 
 ### shape_layer.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\image_editor\components\shape_layer.dart
 
 Descricao:
@@ -2136,7 +2974,6 @@ enum ShapeType { rectangle, circle, line }
 ```
 
 ### text_layer.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\image_editor\components\text_layer.dart
 
 Descricao:
@@ -2389,7 +3226,6 @@ class TextLayerState extends State<TextLayer> {
 ```
 
 ### toolbar.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\image_editor\components\toolbar.dart
 
 Descricao:
@@ -2582,7 +3418,6 @@ class Toolbar extends StatelessWidget {
 ```
 
 ### layer_model.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\image_editor\models\layer_model.dart
 
 Descricao:
@@ -2599,7 +3434,6 @@ class LayerModel {
 ```
 
 ### file_picker.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\image_editor\utils\file_picker.dart
 
 Descricao:
@@ -2618,7 +3452,6 @@ Future<String?> pickFile() async {
 ```
 
 ### image_operations.dart
-
 Path: D:\Projetos\fuk_ui_kit\lib\src\components\image_editor\utils\image_operations.dart
 
 Descricao:
@@ -2639,3 +3472,4 @@ class ImageOperations {
 }
 
 ```
+

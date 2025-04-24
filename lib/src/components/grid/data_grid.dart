@@ -184,12 +184,15 @@ class FukDataGridState extends State<FukDataGrid> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      column.title,
-                      style: column.textStyle ??
-                          Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
+                    Flexible(
+                      child: Text(
+                        column.title,
+                        style: column.textStyle ??
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                      ),
                     ),
                     if (column.sortable)
                       Icon(

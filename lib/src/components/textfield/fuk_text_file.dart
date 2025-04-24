@@ -22,6 +22,7 @@ class FukTextFile extends StatefulWidget {
   final bool validate;
   final String? label;
   final InputDecoration? decoration;
+  final String? hintText;
 
   const FukTextFile({
     super.key,
@@ -32,6 +33,7 @@ class FukTextFile extends StatefulWidget {
     this.validate = true,
     this.label,
     this.decoration,
+    this.hintText,
   });
 
   @override
@@ -160,14 +162,14 @@ class FukTextFileState extends State<FukTextFile> {
                   icon: widget.icon ?? const Icon(Icons.attach_file),
                   onPressed: _pickFile,
                 ),
-                hintText: 'Select a file',
+                hintText: widget.hintText ?? 'Select a file',
               ) ??
               InputDecoration(
                 suffixIcon: IconButton(
                   icon: widget.icon ?? const Icon(Icons.attach_file),
                   onPressed: _pickFile,
                 ),
-                hintText: 'Select a file',
+                hintText: widget.hintText ?? 'Select a file',
               ),
         ),
       ],
